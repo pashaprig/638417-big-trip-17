@@ -1,5 +1,3 @@
-import {createElement} from '../render.js';
-
 const createPointTemplate = () => (
   `            <li class="trip-events__item">
   <div class="event">
@@ -40,20 +38,4 @@ const createPointTemplate = () => (
 </li>`
 );
 
-export default class PointView {
-  getTemplate() {
-    return createPointTemplate();
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
-  }
-}
+export default createPointTemplate;

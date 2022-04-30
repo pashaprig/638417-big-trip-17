@@ -1,7 +1,7 @@
 import BoardPresenter from './presenter/board-presenter';
 import { render } from './render';
-import FilterView from './view/filter-view';
-import SortView from './view/sort-view';
+import FilterView from './view/filter/filter-view';
+import SortView from './view/sort/sort-view';
 
 const pageHeader = document.querySelector('.page-header');
 const tripControls = pageHeader.querySelector('.trip-controls__filters');

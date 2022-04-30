@@ -1,5 +1,3 @@
-import {createElement} from '../render.js';
-
 const createNewEditFormTemplate = () => (
   `              <form class="event event--edit" action="#" method="post">
   <header class="event__header">
@@ -156,20 +154,4 @@ const createNewEditFormTemplate = () => (
 </form>`
 );
 
-export default class EditFormView {
-  getTemplate() {
-    return createNewEditFormTemplate();
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
-  }
-}
+export default createNewEditFormTemplate;
