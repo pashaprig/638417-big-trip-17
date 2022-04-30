@@ -1,6 +1,7 @@
+import BoardPresenter from './presenter/board-presenter';
 import { render } from './render';
-import NewFilterView from './view/filter-view';
-import NewSortView from './view/sort.-viewjs';
+import FilterView from './view/filter-view';
+import SortView from './view/sort-view';
 
 const pageHeader = document.querySelector('.page-header');
 const tripControls = pageHeader.querySelector('.trip-controls__filters');
@@ -8,5 +9,10 @@ const tripControls = pageHeader.querySelector('.trip-controls__filters');
 const pageMain = document.querySelector('.page-main');
 const tripEvents = pageMain.querySelector('.trip-events');
 
-render(new NewFilterView(), tripControls);
-render(new NewSortView(), tripEvents);
+const boardPresenter = new BoardPresenter();
+
+render(new FilterView(), tripControls);
+render(new SortView(), tripEvents);
+
+boardPresenter.init(tripEvents);
+
