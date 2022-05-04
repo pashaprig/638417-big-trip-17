@@ -7,8 +7,12 @@ import PointItemView from '../view/point-item/point-item-view';
 export default class BoardPresenter {
   piontListComponent = new PiontListView();
 
-  init(boardContainer) {
+  init(boardContainer, pointsModel) {
     this.boardContainer = boardContainer;
+    this.pointsModel = pointsModel;
+    this.boardPoints = [...this.pointsModel.getPoints()];
+
+    console.log('board-presenter', this.boardPoints);
 
     render(this.piontListComponent, this.boardContainer);
     render(new EditFormView(), this.piontListComponent.getElement());
