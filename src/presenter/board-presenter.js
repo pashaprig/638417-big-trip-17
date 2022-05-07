@@ -7,19 +7,19 @@ import PointItemView from '../view/point-item/point-item-view';
 export default class BoardPresenter {
   piontListComponent = new PiontListView();
 
-  init(boardContainer, pointsModel) {
+  init(boardContainer, pointsModel, destinationModel) {
     this.boardContainer = boardContainer;
     this.pointsModel = pointsModel;
+    this.destinationModel = destinationModel;
+    this.boardDestination = this.destinationModel.getDestinations();
     this.boardPoints = [...this.pointsModel.getPoints()];
 
-    console.log('board-presenter', this.boardPoints);
-
     render(this.piontListComponent, this.boardContainer);
-    render(new EditFormView(), this.piontListComponent.getElement());
+    render(new EditFormView(this.boardPoints[0], this.boardDestination[0]), this.piontListComponent.getElement());
     render(new AddFormView(), this.piontListComponent.getElement());
 
-    for (let i = 0; i < 3; i++) {
-      render(new PointItemView(), this.piontListComponent.getElement());
+    for (let i = 0; i < this.boardPoints.length ; i++) {
+      render(new PointItemView(this.boardPoints[i]), this.piontListComponent.getElement());
     }
   }
 }

@@ -1,3 +1,4 @@
+import DestinationModel from './model/destination-model';
 import PointModel from './model/point-items-model';
 import BoardPresenter from './presenter/board-presenter';
 import { render } from './render';
@@ -11,10 +12,10 @@ const pageMain = document.querySelector('.page-main');
 const tripEvents = pageMain.querySelector('.trip-events');
 
 const pointsModel = new PointModel();
-console.log('main', pointsModel);
+const destinationModel = new DestinationModel();
 const boardPresenter = new BoardPresenter();
 
 render(new FilterView(), tripControls);
 render(new SortView(), tripEvents);
 
-boardPresenter.init(tripEvents, pointsModel);
+boardPresenter.init(tripEvents, pointsModel, destinationModel);

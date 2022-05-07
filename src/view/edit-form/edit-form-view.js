@@ -2,8 +2,13 @@ import {createElement} from '../../render.js';
 import createNewEditFormTemplate from './edit-form-tpl.js';
 
 export default class EditFormView {
+  constructor(boardPoint, boardDestination){
+    this.boardPoint = boardPoint;
+    this.boardDestination = boardDestination;
+  }
+
   getTemplate() {
-    return createNewEditFormTemplate();
+    return createNewEditFormTemplate(this.boardPoint, this.boardDestination);
   }
 
   getElement() {

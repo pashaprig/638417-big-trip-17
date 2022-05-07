@@ -1,9 +1,13 @@
-import {createElement} from '../../render.js';
-import createPointTemplate from './point-item-tpl.js';
+import {createElement} from '../../render';
+import createPointTemplate from './point-item-tpl';
 
 export default class PointItemView {
+  constructor(boardPoint) {
+    this.boardPoint = boardPoint;
+  }
+
   getTemplate() {
-    return createPointTemplate();
+    return createPointTemplate(this.boardPoint);
   }
 
   getElement() {
