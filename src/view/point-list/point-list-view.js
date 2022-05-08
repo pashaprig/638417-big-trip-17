@@ -1,6 +1,5 @@
-import {createElement} from '../render.js';
-
-const createPointListTemplate = () => '<ul class="trip-events__list"></ul>';
+import {createElement} from '../../render.js';
+import createPointListTemplate from './point-list-tpl.js';
 
 export default class PiontListView {
   getTemplate() {
