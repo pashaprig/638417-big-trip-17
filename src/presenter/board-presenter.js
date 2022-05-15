@@ -8,8 +8,8 @@ export default class BoardPresenter {
   #boardContainer = null;
   #pointsModel = null;
   #destinationModel = null;
-  #boardPoints = null;
   #boardDestination = null;
+  #boardPoints = [];
 
   #piontListComponent = new PiontListView();
 
@@ -21,11 +21,15 @@ export default class BoardPresenter {
     this.#boardPoints = [...this.#pointsModel.points];
 
     render(this.#piontListComponent, this.#boardContainer);
-    render(new EditFormView(this.#boardPoints[0], this.#boardDestination[0]), this.#piontListComponent.element);
+    // render(new EditFormView(this.#boardPoints[0], this.#boardDestination[0]), this.#piontListComponent.element);
     render(new AddFormView(), this.#piontListComponent.element);
 
-    for (let i = 0; i < this.#boardPoints.length ; i++) {
-      render(new PointItemView(this.#boardPoints[i]), this.#piontListComponent.element);
-    }
+    this.#boardPoints.forEach((point) => this.#renderPoint(point));
   }
+
+  #renderPoint = (point) => {
+    const pointComponent = new PointItemView(point);
+
+    render(pointComponent, this.#piontListComponent.element);
+  };
 }
