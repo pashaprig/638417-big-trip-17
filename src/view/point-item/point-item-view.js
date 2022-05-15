@@ -2,23 +2,26 @@ import {createElement} from '../../render';
 import createPointTemplate from './point-item-tpl';
 
 export default class PointItemView {
+  #element = null;
+  #boardPoint = null;
+
   constructor(boardPoint) {
-    this.boardPoint = boardPoint;
+    this.#boardPoint = boardPoint;
   }
 
-  getTemplate() {
-    return createPointTemplate(this.boardPoint);
+  get template() {
+    return createPointTemplate(this.#boardPoint);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
