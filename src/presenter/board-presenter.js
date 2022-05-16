@@ -2,6 +2,7 @@ import { render } from '../render';
 import EditFormView from '../view/edit-form/edit-form-view';
 import PiontListView from '../view/point-list/point-list-view';
 import PointItemView from '../view/point-item/point-item-view';
+import PiontListEmptyView from '../view/point-list-empty/point-list-view';
 
 export default class BoardPresenter {
   #boardContainer = null;
@@ -19,9 +20,12 @@ export default class BoardPresenter {
     this.#boardDestination = this.#destinationModel.getDestinations();
     this.#boardPoints = [...this.#pointsModel.points];
 
-    render(this.#piontListComponent, this.#boardContainer);
-
-    this.#boardPoints.forEach((point) => this.#renderPoint(point, this.#boardDestination[0]));
+    if (this.#boardPoints.length < 1) {
+      render(new PiontListEmptyView(), this.#boardContainer);
+    } else {
+      render(this.#piontListComponent, this.#boardContainer);
+      this.#boardPoints.forEach((point) => this.#renderPoint(point, this.#boardDestination[0]));
+    }
   }
 
   #renderPoint = (point, destination) => {
