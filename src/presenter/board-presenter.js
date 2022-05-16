@@ -55,12 +55,13 @@ export default class BoardPresenter {
     editFormComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
       replaceEditFormToPoint();
       document.addEventListener('keydown', onEscKeyDown);
+      document.removeEventListener('keydown', onEscKeyDown);
     });
 
     editFormComponent.element.querySelector('form.event--edit').addEventListener('submit', (evt) => {
       evt.preventDefault();
       replaceEditFormToPoint();
-      document.addEventListener('keydown', onEscKeyDown);
+      document.removeEventListener('keydown', onEscKeyDown);
     });
 
     render(pointComponent, this.#piontListComponent.element);
