@@ -1,20 +1,22 @@
-import {createElement} from '../../render';
+import { createElement } from '../../render';
 import addNewFormTemplate from './add-form-tpl';
 
 export default class AddFormView {
-  getTemplate() {
+  #element = null;
+
+  get template() {
     return addNewFormTemplate();
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
