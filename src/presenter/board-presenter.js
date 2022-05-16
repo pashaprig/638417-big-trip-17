@@ -1,5 +1,4 @@
 import { render } from '../render';
-// import AddFormView from '../view/add-form/add-form-view';
 import EditFormView from '../view/edit-form/edit-form-view';
 import PiontListView from '../view/point-list/point-list-view';
 import PointItemView from '../view/point-item/point-item-view';
@@ -21,7 +20,6 @@ export default class BoardPresenter {
     this.#boardPoints = [...this.#pointsModel.points];
 
     render(this.#piontListComponent, this.#boardContainer);
-    // render(new AddFormView(), this.#piontListComponent.element);
 
     this.#boardPoints.forEach((point) => this.#renderPoint(point, this.#boardDestination[0]));
   }
