@@ -6,16 +6,16 @@ import FilterView from './view/filter/filter-view';
 import SortView from './view/sort/sort-view';
 
 const pageHeader = document.querySelector('.page-header');
-const tripControls = pageHeader.querySelector('.trip-controls__filters');
+const tripControls = pageHeader.querySelector('.trip-controls__filters'); //Блок в хедере страницы для отрисовки контролов
 
 const pageMain = document.querySelector('.page-main');
-const tripEvents = pageMain.querySelector('.trip-events');
+const tripEvents = pageMain.querySelector('.trip-events'); //Блок в мейне страницы для отрисовки информации про точки/места
 
-const pointsModel = new PointModel();
-const destinationModel = new DestinationModel();
-const boardPresenter = new BoardPresenter();
+const pointsModel = new PointModel(); //Массив точек/мест
+const destinationModel = new DestinationModel(); //Массив информации про точки/места
 
-render(new FilterView(), tripControls);
-render(new SortView(), tripEvents);
+render(new FilterView(), tripControls); // Отрисовывает фильтры в блок для контролов
+render(new SortView(), tripEvents); // Отрисовывает элементы сортировки в блок для точек/мест
+const boardPresenter = new BoardPresenter(tripEvents, pointsModel, destinationModel);
 
-boardPresenter.init(tripEvents, pointsModel, destinationModel);
+boardPresenter.init();

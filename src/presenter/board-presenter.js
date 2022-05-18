@@ -1,8 +1,8 @@
 import { render } from '../render';
-// import AddFormView from '../view/add-form/add-form-view';
 import EditFormView from '../view/edit-form/edit-form-view';
 import PiontListView from '../view/point-list/point-list-view';
 import PointItemView from '../view/point-item/point-item-view';
+import PiontListEmptyView from '../view/point-list-empty/point-list-view';
 
 export default class BoardPresenter {
   #boardContainer = null;
@@ -13,33 +13,42 @@ export default class BoardPresenter {
 
   #piontListComponent = new PiontListView();
 
-  init(boardContainer, pointsModel, destinationModel) {
+  constructor(boardContainer, pointsModel, destinationModel) {
     this.#boardContainer = boardContainer;
     this.#pointsModel = pointsModel;
     this.#destinationModel = destinationModel;
-    this.#boardDestination = this.#destinationModel.getDestinations();
-    this.#boardPoints = [...this.#pointsModel.points];
-
-    render(this.#piontListComponent, this.#boardContainer);
-    // render(new AddFormView(), this.#piontListComponent.element);
-
-    this.#boardPoints.forEach((point) => this.#renderPoint(point, this.#boardDestination[0]));
   }
 
-  #renderPoint = (point, destination) => {
-    const pointComponent = new PointItemView(point);
-    const editFormComponent = new EditFormView(point, destination);
+  init() { // Инициация пресентера
+    this.#boardPoints = [...this.#pointsModel.points]; //Создаёт точки
+    this.#boardDestination = this.#destinationModel.getDestinations(); //Создаёт информацию про точки
+
+    this.#renderBoard();
+  }
+
+  #renderBoard () { //Отрисовывает контейнер для точек
+    if (this.#boardPoints.length < 1) {
+      render(new PiontListEmptyView()/*Вьюха заглушки*/, this.#boardContainer); //Отрисовать заглушку в контейнер, если нет точек
+    } else {
+      render(this.#piontListComponent, this.#boardContainer); //Отрисовать точки в контейнер, если они есть
+      this.#boardPoints.forEach((point) => this.#renderPoint(point, this.#boardDestination[0])); //Рендерит каждую точку из массива точек, плюс добавляет информацию про точку
+    }
+  }
+
+  #renderPoint (point, destination) { //Отрисовывает точки
+    const pointComponent = new PointItemView(point); //Вьюха точки
+    const editFormComponent = new EditFormView(point, destination); //Вьюха формы редактирования
 
 
-    const replacePointToEditForm = () => {
+    const replacePointToEditForm = () => { //замена точки на форму редактирования
       this.#piontListComponent.element.replaceChild(editFormComponent.element, pointComponent.element);
     };
 
-    const replaceEditFormToPoint = () => {
+    const replaceEditFormToPoint = () => { // Замена формы редактирования на точку
       this.#piontListComponent.element.replaceChild(pointComponent.element, editFormComponent.element);
     };
 
-    const onEscKeyDown = (evt) => {
+    const onEscKeyDown = (evt) => { //Отработка нажатия на Esc
       if (evt.key === 'Escape' || evt.key === 'Esc') {
         evt.preventDefault();
         replaceEditFormToPoint();
@@ -47,22 +56,23 @@ export default class BoardPresenter {
       }
     };
 
-    pointComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+    pointComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => { //При клике на кнопку показать форму
       replacePointToEditForm();
       document.addEventListener('keydown', onEscKeyDown);
     });
 
-    editFormComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+    editFormComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => { //При клике показать форму
       replaceEditFormToPoint();
       document.addEventListener('keydown', onEscKeyDown);
+      document.removeEventListener('keydown', onEscKeyDown);
     });
 
-    editFormComponent.element.querySelector('form.event--edit').addEventListener('submit', (evt) => {
+    editFormComponent.element.querySelector('form.event--edit').addEventListener('submit', (evt) => { //При сабмите формы редактирования
       evt.preventDefault();
       replaceEditFormToPoint();
-      document.addEventListener('keydown', onEscKeyDown);
+      document.removeEventListener('keydown', onEscKeyDown);
     });
 
-    render(pointComponent, this.#piontListComponent.element);
-  };
+    render(pointComponent, this.#piontListComponent.element); //Отрисовать точку, <li> в обёртку для точек <ul>
+  }
 }
