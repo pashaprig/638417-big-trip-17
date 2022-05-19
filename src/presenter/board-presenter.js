@@ -1,9 +1,10 @@
-import { render } from '../render';
+
 import EditFormView from '../view/edit-form/edit-form-view';
 import PiontListView from '../view/point-list/point-list-view';
 import PointItemView from '../view/point-item/point-item-view';
 import PiontListEmptyView from '../view/point-list-empty/point-list-empty-view';
 import { isEscapePressed } from '../utils';
+import { render } from '../framework/render';
 
 export default class BoardPresenter {
   #boardContainer = null;
