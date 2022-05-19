@@ -4,7 +4,7 @@ import PiontListView from '../view/point-list/point-list-view';
 import PointItemView from '../view/point-item/point-item-view';
 import PiontListEmptyView from '../view/point-list-empty/point-list-empty-view';
 import { isEscapePressed } from '../utils';
-import { render } from '../framework/render';
+import { render, replace } from '../framework/render';
 
 export default class BoardPresenter {
   #boardContainer = null;
@@ -43,11 +43,11 @@ export default class BoardPresenter {
 
 
     const replacePointToEditForm = () => { //замена точки на форму редактирования
-      this.#piontListComponent.element.replaceChild(editFormComponent.element, pointComponent.element);
+      replace(editFormComponent, pointComponent);
     };
 
     const replaceEditFormToPoint = () => { // Замена формы редактирования на точку
-      this.#piontListComponent.element.replaceChild(pointComponent.element, editFormComponent.element);
+      replace(pointComponent, editFormComponent);
     };
 
     const onEscKeyDown = (evt) => { //Отработка нажатия на Esc
