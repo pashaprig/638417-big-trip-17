@@ -12,4 +12,13 @@ export default class PointItemView extends AbstractView {
   get template() {
     return createPointTemplate(this.#boardPoint);
   }
+
+  setPointButtonOpenHandler = (callback) => {
+    this._callback.buttonOpen = callback;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#pointButtonOpenHandler);
+  };
+
+  #pointButtonOpenHandler = () => {
+    this._callback.buttonOpen();
+  };
 }

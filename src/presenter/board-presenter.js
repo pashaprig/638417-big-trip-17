@@ -58,19 +58,17 @@ export default class BoardPresenter {
       }
     };
 
-    pointComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => { //При клике на кнопку показать форму
+    pointComponent.setPointButtonOpenHandler(() => { //При клике на кнопку показать форму в точке
       replacePointToEditForm();
       document.addEventListener('keydown', onEscKeyDown);
     });
 
-    editFormComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => { //При клике показать форму
+    editFormComponent.setFormButtonCloseHandler(() => { //При клике на кнопку закрыть форму в форме
       replaceEditFormToPoint();
-      document.addEventListener('keydown', onEscKeyDown);
       document.removeEventListener('keydown', onEscKeyDown);
     });
 
-    editFormComponent.element.querySelector('form.event--edit').addEventListener('submit', (evt) => { //При сабмите формы редактирования
-      evt.preventDefault();
+    editFormComponent.setFormSubmitHandler(() => { //При сабмите формы редактирования
       replaceEditFormToPoint();
       document.removeEventListener('keydown', onEscKeyDown);
     });
