@@ -28,7 +28,7 @@ export default class BoardPresenter {
   }
 
   #renderBoard () { //Отрисовывает контейнер для точек
-    if (this.#boardPoints.length < 1) {
+    if (!this.#boardPoints.length) {
       render(new PiontListEmptyView()/*Вьюха заглушки*/, this.#boardContainer); //Отрисовать заглушку в контейнер, если нет точек
     } else {
       render(this.#piontListComponent, this.#boardContainer); //Отрисовать точки в контейнер, если они есть
