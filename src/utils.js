@@ -54,4 +54,6 @@ const getTitle = (boardPoint) => {
   return pretextTitle;
 };
 
-export {getRandomInteger, getRandomArrayElement, getRandomMultipleArrayElement, getDurationDates, getTitle};
+const isEscapePressed = (evt) => (evt.key === 'Escape' || evt.key === 'Esc');
+
+export {getRandomInteger, getRandomArrayElement, getRandomMultipleArrayElement, getDurationDates, getTitle, isEscapePressed};

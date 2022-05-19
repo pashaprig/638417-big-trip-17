@@ -3,6 +3,7 @@ import EditFormView from '../view/edit-form/edit-form-view';
 import PiontListView from '../view/point-list/point-list-view';
 import PointItemView from '../view/point-item/point-item-view';
 import PiontListEmptyView from '../view/point-list-empty/point-list-view';
+import { isEscapePressed } from '../utils';
 
 export default class BoardPresenter {
   #boardContainer = null;
@@ -49,7 +50,7 @@ export default class BoardPresenter {
     };
 
     const onEscKeyDown = (evt) => { //Отработка нажатия на Esc
-      if (evt.key === 'Escape' || evt.key === 'Esc') {
+      if (isEscapePressed(evt)) {
         evt.preventDefault();
         replaceEditFormToPoint();
         document.removeEventListener('keydown', onEscKeyDown);
