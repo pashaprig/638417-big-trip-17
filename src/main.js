@@ -1,7 +1,7 @@
 import DestinationModel from './model/destination-model';
 import PointModel from './model/point-items-model';
 import BoardPresenter from './presenter/board-presenter';
-import { render } from './render';
+import { render } from './framework/render.js';
 import FilterView from './view/filter/filter-view';
 import SortView from './view/sort/sort-view';
 

@@ -1,8 +1,10 @@
-import { render } from '../render';
+
 import EditFormView from '../view/edit-form/edit-form-view';
 import PiontListView from '../view/point-list/point-list-view';
 import PointItemView from '../view/point-item/point-item-view';
-import PiontListEmptyView from '../view/point-list-empty/point-list-view';
+import PiontListEmptyView from '../view/point-list-empty/point-list-empty-view';
+import { isEscapePressed } from '../utils';
+import { render, replace } from '../framework/render';
 
 export default class BoardPresenter {
   #boardContainer = null;
@@ -27,7 +29,7 @@ export default class BoardPresenter {
   }
 
   #renderBoard () { //Отрисовывает контейнер для точек
-    if (this.#boardPoints.length < 1) {
+    if (!this.#boardPoints.length) {
       render(new PiontListEmptyView()/*Вьюха заглушки*/, this.#boardContainer); //Отрисовать заглушку в контейнер, если нет точек
     } else {
       render(this.#piontListComponent, this.#boardContainer); //Отрисовать точки в контейнер, если они есть
@@ -41,34 +43,32 @@ export default class BoardPresenter {
 
 
     const replacePointToEditForm = () => { //замена точки на форму редактирования
-      this.#piontListComponent.element.replaceChild(editFormComponent.element, pointComponent.element);
+      replace(editFormComponent, pointComponent);
     };
 
     const replaceEditFormToPoint = () => { // Замена формы редактирования на точку
-      this.#piontListComponent.element.replaceChild(pointComponent.element, editFormComponent.element);
+      replace(pointComponent, editFormComponent);
     };
 
     const onEscKeyDown = (evt) => { //Отработка нажатия на Esc
-      if (evt.key === 'Escape' || evt.key === 'Esc') {
+      if (isEscapePressed(evt)) {
         evt.preventDefault();
         replaceEditFormToPoint();
         document.removeEventListener('keydown', onEscKeyDown);
       }
     };
 
-    pointComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => { //При клике на кнопку показать форму
+    pointComponent.setPointButtonOpenHandler(() => { //При клике на кнопку показать форму в точке
       replacePointToEditForm();
       document.addEventListener('keydown', onEscKeyDown);
     });
 
-    editFormComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => { //При клике показать форму
+    editFormComponent.setFormButtonCloseHandler(() => { //При клике на кнопку закрыть форму в форме
       replaceEditFormToPoint();
-      document.addEventListener('keydown', onEscKeyDown);
       document.removeEventListener('keydown', onEscKeyDown);
     });
 
-    editFormComponent.element.querySelector('form.event--edit').addEventListener('submit', (evt) => { //При сабмите формы редактирования
-      evt.preventDefault();
+    editFormComponent.setFormSubmitHandler(() => { //При сабмите формы редактирования
       replaceEditFormToPoint();
       document.removeEventListener('keydown', onEscKeyDown);
     });

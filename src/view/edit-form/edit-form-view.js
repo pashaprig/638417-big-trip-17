@@ -1,12 +1,12 @@
-import {createElement} from '../../render.js';
+import AbstractView from '../../framework/view/abstract-view.js';
 import createNewEditFormTemplate from './edit-form-tpl.js';
 
-export default class EditFormView {
-  #element = null;
+export default class EditFormView extends AbstractView {
   #boardPoint = null;
   #boardDestination = null;
 
   constructor(boardPoint, boardDestination){
+    super();
     this.#boardPoint = boardPoint;
     this.#boardDestination = boardDestination;
   }
@@ -15,15 +15,22 @@ export default class EditFormView {
     return createNewEditFormTemplate(this.#boardPoint, this.#boardDestination);
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
+  setFormSubmitHandler = (callback) => {
+    this._callback.formSubmit = callback;
+    this.element.querySelector('form.event--edit').addEventListener('submit', this.#formSubmitHandler);
+  };
 
-    return this.#element;
-  }
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.formSubmit();
+  };
 
-  removeElement() {
-    this.#element = null;
-  }
+  setFormButtonCloseHandler = (callback) => {
+    this._callback.buttonClose = callback;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#formButtonCloseHandler);
+  };
+
+  #formButtonCloseHandler = () => {
+    this._callback.buttonClose();
+  };
 }

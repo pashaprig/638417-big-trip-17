@@ -1,11 +1,11 @@
-import {createElement} from '../../render';
+import AbstractView from '../../framework/view/abstract-view.js';
 import createPointTemplate from './point-item-tpl';
 
-export default class PointItemView {
-  #element = null;
+export default class PointItemView extends AbstractView {
   #boardPoint = null;
 
   constructor(boardPoint) {
+    super();
     this.#boardPoint = boardPoint;
   }
 
@@ -13,15 +13,12 @@ export default class PointItemView {
     return createPointTemplate(this.#boardPoint);
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
+  setPointButtonOpenHandler = (callback) => {
+    this._callback.buttonOpen = callback;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#pointButtonOpenHandler);
+  };
 
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
-  }
+  #pointButtonOpenHandler = () => {
+    this._callback.buttonOpen();
+  };
 }
