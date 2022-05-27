@@ -1,11 +1,8 @@
-
-import EditFormView from '../view/edit-form/edit-form-view';
 import PiontListView from '../view/point-list/point-list-view';
-import PointItemView from '../view/point-item/point-item-view';
 import PiontListEmptyView from '../view/point-list-empty/point-list-empty-view';
-import { isEscapePressed } from '../utils';
-import {render, RenderPosition, replace} from '../framework/render.js';
+import { render, RenderPosition } from '../framework/render.js';
 import SortView from '../view/sort/sort-view';
+import PointPresenter from './point-presenter';
 
 export default class BoardPresenter {
   #boardContainer = null;
@@ -31,7 +28,7 @@ export default class BoardPresenter {
     this.#renderBoard();
   }
 
-  #renderBoard () { //Отрисовывает контейнер для точек
+  #renderBoard() { //Отрисовывает контейнер для точек
     if (!this.#boardPoints.length) {
       this.#renderNoTasks(); //Отрисовать заглушку в контейнер, если нет точек
     } else {
@@ -53,41 +50,8 @@ export default class BoardPresenter {
     render(this.#piontListComponent, this.#boardContainer, RenderPosition.BEFOREEND);
   };
 
-  #renderPoint (point, destination) { //Отрисовывает точку
-    const pointComponent = new PointItemView(point); //Вьюха точки
-    const editFormComponent = new EditFormView(point, destination); //Вьюха формы редактирования
-
-    const replacePointToEditForm = () => { //замена точки на форму редактирования
-      replace(editFormComponent, pointComponent);
-    };
-
-    const replaceEditFormToPoint = () => { // Замена формы редактирования на точку
-      replace(pointComponent, editFormComponent);
-    };
-
-    const onEscKeyDown = (evt) => { //Отработка нажатия на Esc
-      if (isEscapePressed(evt)) {
-        evt.preventDefault();
-        replaceEditFormToPoint();
-        document.removeEventListener('keydown', onEscKeyDown);
-      }
-    };
-
-    pointComponent.setPointButtonOpenHandler(() => { //При клике на кнопку показать форму в точке
-      replacePointToEditForm();
-      document.addEventListener('keydown', onEscKeyDown);
-    });
-
-    editFormComponent.setFormButtonCloseHandler(() => { //При клике на кнопку закрыть форму в форме
-      replaceEditFormToPoint();
-      document.removeEventListener('keydown', onEscKeyDown);
-    });
-
-    editFormComponent.setFormSubmitHandler(() => { //При сабмите формы редактирования
-      replaceEditFormToPoint();
-      document.removeEventListener('keydown', onEscKeyDown);
-    });
-
-    render(pointComponent, this.#piontListComponent.element); //Отрисовать точку, <li> в обёртку для точек <ul>
+  #renderPoint(point, destination) { //Отрисовывает точку
+    const pointPresenter = new PointPresenter(this.#piontListComponent.element);
+    pointPresenter.init(point, destination);
   }
 }
