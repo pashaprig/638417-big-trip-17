@@ -18,7 +18,18 @@ export default class PointItemView extends AbstractView {
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#pointButtonOpenHandler);
   };
 
+  setFavoriteClickHandler = (callback) => {
+    this._callback.favoriteClick = callback;
+    this.element.querySelector('.event__favorite-btn').addEventListener('click', this.#favoriteClickHandler);
+    this.element.querySelector('.event__favorite-btn').classList.toggle('event__favorite-btn--active'); // где нужно добавить стили звёздочке?
+  };
+
   #pointButtonOpenHandler = () => {
     this._callback.buttonOpen();
+  };
+
+  #favoriteClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.favoriteClick();
   };
 }
