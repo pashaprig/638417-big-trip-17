@@ -3,7 +3,7 @@ import PiontListEmptyView from '../view/point-list-empty/point-list-empty-view';
 import { render, RenderPosition } from '../framework/render.js';
 import SortView from '../view/sort/sort-view';
 import PointPresenter from './point-presenter';
-import {updateItem} from '../utils';
+import { updateItem } from '../utils';
 
 export default class BoardPresenter {
   #boardContainer = null;
@@ -40,6 +40,10 @@ export default class BoardPresenter {
     }
   }
 
+  #handleModeChange = () => {
+    this.#pointPresenter.forEach((presenter) => presenter.resetView());
+  };
+
   #handlePointChange = (updatedPoint) => {
     this.#boardPoints = updateItem(this.#boardPoints, updatedPoint);
     this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);
@@ -58,7 +62,7 @@ export default class BoardPresenter {
   };
 
   #renderPoint(point, destination) { //Отрисовывает точку
-    const pointPresenter = new PointPresenter(this.#piontListComponent.element, this.#handlePointChange);
+    const pointPresenter = new PointPresenter(this.#piontListComponent.element, this.#handlePointChange, this.#handleModeChange);
     pointPresenter.init(point, destination);
     this.#pointPresenter.set(point.id, pointPresenter);
   }
@@ -68,5 +72,3 @@ export default class BoardPresenter {
     this.#pointPresenter.clear();
   };
 }
-
-
