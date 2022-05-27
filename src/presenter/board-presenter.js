@@ -4,7 +4,8 @@ import PiontListView from '../view/point-list/point-list-view';
 import PointItemView from '../view/point-item/point-item-view';
 import PiontListEmptyView from '../view/point-list-empty/point-list-empty-view';
 import { isEscapePressed } from '../utils';
-import { render, replace } from '../framework/render';
+import {render, RenderPosition, replace} from '../framework/render.js';
+import SortView from '../view/sort/sort-view';
 
 export default class BoardPresenter {
   #boardContainer = null;
@@ -14,6 +15,8 @@ export default class BoardPresenter {
   #boardPoints = [];
 
   #piontListComponent = new PiontListView();
+  #piontListEmptyComponent = new PiontListEmptyView();
+  #sortComponent = new SortView();
 
   constructor(boardContainer, pointsModel, destinationModel) {
     this.#boardContainer = boardContainer;
@@ -30,17 +33,29 @@ export default class BoardPresenter {
 
   #renderBoard () { //Отрисовывает контейнер для точек
     if (!this.#boardPoints.length) {
-      render(new PiontListEmptyView()/*Вьюха заглушки*/, this.#boardContainer); //Отрисовать заглушку в контейнер, если нет точек
+      this.#renderNoTasks(); //Отрисовать заглушку в контейнер, если нет точек
     } else {
-      render(this.#piontListComponent, this.#boardContainer); //Отрисовать точки в контейнер, если они есть
+      this.#renderSort(); // Отрисовывает элементы сортировки в контейнер
+      this.#renderPiontList(); // Отрисовывает обёрту списка в контейнер
       this.#boardPoints.forEach((point) => this.#renderPoint(point, this.#boardDestination[0])); //Рендерит каждую точку из массива точек, плюс добавляет информацию про точку
     }
   }
 
-  #renderPoint (point, destination) { //Отрисовывает точки
+  #renderSort = () => {
+    render(this.#sortComponent, this.#boardContainer, RenderPosition.AFTERBEGIN);
+  };
+
+  #renderNoTasks = () => {
+    render(this.#piontListEmptyComponent, this.#boardContainer, RenderPosition.AFTERBEGIN);
+  };
+
+  #renderPiontList = () => {
+    render(this.#piontListComponent, this.#boardContainer, RenderPosition.BEFOREEND);
+  };
+
+  #renderPoint (point, destination) { //Отрисовывает точку
     const pointComponent = new PointItemView(point); //Вьюха точки
     const editFormComponent = new EditFormView(point, destination); //Вьюха формы редактирования
-
 
     const replacePointToEditForm = () => { //замена точки на форму редактирования
       replace(editFormComponent, pointComponent);
