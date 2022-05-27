@@ -10,6 +10,7 @@ export default class BoardPresenter {
   #destinationModel = null;
   #boardDestination = null;
   #boardPoints = [];
+  #pointPresenter = new Map();
 
   #piontListComponent = new PiontListView();
   #piontListEmptyComponent = new PiontListEmptyView();
@@ -53,5 +54,13 @@ export default class BoardPresenter {
   #renderPoint(point, destination) { //Отрисовывает точку
     const pointPresenter = new PointPresenter(this.#piontListComponent.element);
     pointPresenter.init(point, destination);
+    this.#pointPresenter.set(point.id, pointPresenter);
   }
+
+  #clearPointList = () => {
+    this.#pointPresenter.forEach((presenter) => presenter.destroy());
+    this.#pointPresenter.clear();
+  };
 }
+
+
