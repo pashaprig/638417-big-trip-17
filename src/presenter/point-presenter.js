@@ -1,7 +1,7 @@
 import { isEscapePressed } from '../utils';
 import PointItemView from '../view/point-item/point-item-view';
 import EditFormView from '../view/edit-form/edit-form-view';
-import { render, replace } from '../framework/render.js';
+import { render, replace, remove } from '../framework/render.js';
 
 export default class PointPresenter {
   #pointListContainer = null;
@@ -20,6 +20,9 @@ export default class PointPresenter {
     this.#point = point;
     this.#destination = destination;
 
+    const prevPointComponent = this.#pointComponent;
+    const prevEditFormComponent = this.#editFormComponent;
+
     this.#pointComponent = new PointItemView(point); //Вьюха точки
     this.#editFormComponent = new EditFormView(point, destination); //Вьюха формы редактирования
 
@@ -27,7 +30,28 @@ export default class PointPresenter {
     this.#editFormComponent.setFormButtonCloseHandler(this.#handleCloseClick);
     this.#editFormComponent.setFormSubmitHandler(this.#handleFormSubmit);
 
-    render(this.#pointComponent, this.#pointListContainer); //Отрисовать точку, <li> в обёртку для точек <ul>
+    if (prevPointComponent === null || prevEditFormComponent === null) {
+      render(this.#pointComponent, this.#pointListContainer); //Отрисовать точку, <li> в обёртку для точек <ul>
+      return;
+    }
+
+    // Проверка на наличие в DOM необходима,
+    // чтобы не пытаться заменить то, что не было отрисовано
+    if (this.#pointListContainer.contains(prevPointComponent.element)) {
+      replace(this.#pointComponent, prevPointComponent);
+    }
+
+    if (this.#pointListContainer.contains(prevEditFormComponent.element)) {
+      replace(this.#editFormComponent, prevEditFormComponent);
+    }
+
+    remove(prevPointComponent);
+    remove(prevEditFormComponent);
+  };
+
+  destroy = () => {
+    remove(this.#pointComponent);
+    remove(this.#editFormComponent);
   };
 
   #replacePointToEditForm = () => { //замена точки на форму редактирования
