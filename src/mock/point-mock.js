@@ -4,6 +4,7 @@ import {getRandomInteger, getRandomArrayElement} from '../utils.js';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc.js';
 import minMax from 'dayjs/plugin/minMax.js';
+import { nanoid } from 'nanoid';
 dayjs.extend(utc);
 dayjs.extend(minMax);
 
@@ -22,6 +23,7 @@ const genearateDate = () => {
 export const generatePoint = () => {
   const offers = getRandomArrayElement(createTypes());
   return {
+    id: nanoid(),
     basePrice: getRandomInteger(10, 1000),
     dateFrom: dayjs.min(dayjs(), genearateDate().dateFrom, genearateDate().dateTo),
     dateTo: dayjs.max(dayjs(), genearateDate().dateFrom, genearateDate().dateTo),
