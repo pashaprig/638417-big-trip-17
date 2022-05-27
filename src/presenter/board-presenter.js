@@ -58,7 +58,7 @@ export default class BoardPresenter {
   };
 
   #renderPoint(point, destination) { //Отрисовывает точку
-    const pointPresenter = new PointPresenter(this.#piontListComponent.element);
+    const pointPresenter = new PointPresenter(this.#piontListComponent.element, this.#handlePointChange);
     pointPresenter.init(point, destination);
     this.#pointPresenter.set(point.id, pointPresenter);
   }

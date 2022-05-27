@@ -5,6 +5,7 @@ import { render, replace, remove } from '../framework/render.js';
 
 export default class PointPresenter {
   #pointListContainer = null;
+  #changeData = null;
 
   #pointComponent = null;
   #editFormComponent = null;
@@ -12,8 +13,9 @@ export default class PointPresenter {
   #point = null;
   #destination = null;
 
-  constructor(pointListContainer) {
+  constructor(pointListContainer, changeData) {
     this.#pointListContainer = pointListContainer;
+    this.#changeData = changeData;
   }
 
   init = (point, destination) => {
@@ -27,6 +29,7 @@ export default class PointPresenter {
     this.#editFormComponent = new EditFormView(point, destination); //Вьюха формы редактирования
 
     this.#pointComponent.setPointButtonOpenHandler(this.#handleEditClick);
+    this.#pointComponent.setFavoriteClickHandler(this.#handleFavoriteClick);
     this.#editFormComponent.setFormButtonCloseHandler(this.#handleCloseClick);
     this.#editFormComponent.setFormSubmitHandler(this.#handleFormSubmit);
 
@@ -76,11 +79,16 @@ export default class PointPresenter {
     this.#replacePointToEditForm();
   };
 
+  #handleFavoriteClick = () => {
+    this.#changeData({...this.#point, isFavorite: !this.#point.isFavorite});
+  };
+
   #handleCloseClick = () => {
     this.#replaceEditFormToPoint();
   };
 
-  #handleFormSubmit = () => {
+  #handleFormSubmit = (point) => {
+    this.#changeData(point);
     this.#replaceEditFormToPoint();
   };
 }
