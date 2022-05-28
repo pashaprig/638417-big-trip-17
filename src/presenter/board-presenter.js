@@ -33,11 +33,12 @@ export default class BoardPresenter {
   #renderBoard() { //Отрисовывает контейнер для точек
     if (!this.#boardPoints.length) {
       this.#renderNoTasks(); //Отрисовать заглушку в контейнер, если нет точек
-    } else {
-      this.#renderSort(); // Отрисовывает элементы сортировки в контейнер
-      this.#renderPiontList(); // Отрисовывает обёрту списка в контейнер
-      this.#boardPoints.forEach((point) => this.#renderPoint(point, this.#boardDestination[0])); //Рендерит каждую точку из массива точек, плюс добавляет информацию про точку
+      return;
     }
+    this.#renderSort(); // Отрисовывает элементы сортировки в контейнер
+    this.#renderPiontList(); // Отрисовывает обёрту списка в контейнер
+    this.#boardPoints.forEach((point) => this.#renderPoint(point, this.#boardDestination[0])); //Рендерит каждую точку из массива точек, плюс добавляет информацию про точку
+
   }
 
   #handleModeChange = () => {
@@ -46,7 +47,7 @@ export default class BoardPresenter {
 
   #handlePointChange = (updatedPoint) => {
     this.#boardPoints = updateItem(this.#boardPoints, updatedPoint);
-    this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);
+    this.#pointPresenter.get(updatedPoint.id).init(updatedPoint, this.#boardDestination[0]);
   };
 
   #renderSort = () => {
