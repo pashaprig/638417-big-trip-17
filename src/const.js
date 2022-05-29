@@ -2,6 +2,7 @@ const FilterType = {
   ALL: 'all',
   FUTURE : 'future',
   PAST: 'past',
+  EVERYTHING: 'everything',
 };
 
 const SortType = {

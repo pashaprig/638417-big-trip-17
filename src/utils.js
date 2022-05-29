@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc.js';
 import minMax from 'dayjs/plugin/minMax.js';
 import duration from 'dayjs/plugin/duration.js';
+import { FilterType } from './const';
 dayjs.extend(utc);
 dayjs.extend(minMax);
 dayjs.extend(duration);
@@ -102,4 +103,16 @@ const sortByTime = (pointA, pointB) => {
   return compareTime(timeA, timeB);
 };
 
-export { getRandomInteger, getRandomArrayElement, getRandomMultipleArrayElement, getDurationDates, getTitle, isEscapePressed, updateItem, sortPointByPrice, sortByTime };
+
+const isPointInPast = (dueDate) => dayjs().isAfter(dueDate, 'D');
+const isPointInFuture = (dueDate) => dayjs().isBefore(dueDate, 'D');
+const isPointInPresent = (dueDate) => dayjs().isSame(dueDate, 'D');
+
+const filter = {
+  [FilterType.ALL]: (points) => points,
+  [FilterType.FUTURE]: (points) => points.filter((point) => isPointInFuture(point.dateFrom) && isPointInPresent(point.dateFrom)),
+  [FilterType.PAST]: (points) => points.filter((point) => isPointInPast(point.dateTo)),
+  [FilterType.EVERYTHING]: (points) => points.filter((point) => isPointInPast(point.dateFrom) && isPointInFuture(point.dateTo)),
+};
+
+export { getRandomInteger, getRandomArrayElement, getRandomMultipleArrayElement, getDurationDates, getTitle, isEscapePressed, updateItem, sortPointByPrice, sortByTime, filter };

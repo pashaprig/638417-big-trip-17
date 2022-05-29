@@ -10,7 +10,7 @@ dayjs.extend(minMax);
 
 
 const genearateDate = () => {
-  const maxDaysGap = 30;
+  const maxDaysGap = 10;
   const maxTimeGap = 10;
   const firstDayGap = getRandomInteger(-maxDaysGap, maxDaysGap);
   const secondDayGap = getRandomInteger(firstDayGap, maxDaysGap);
