@@ -36,7 +36,7 @@ export default class BoardPresenter {
       return;
     }
     this.#renderSort(); // Отрисовывает элементы сортировки в контейнер
-    this.#renderPiontList(); // Отрисовывает обёрту списка в контейнер
+    this.#renderPiontList(); // Отрисовывает обёртку списка в контейнер
     this.#boardPoints.forEach((point) => this.#renderPoint(point, this.#boardDestination[0])); //Рендерит каждую точку из массива точек, плюс добавляет информацию про точку
 
   }
@@ -50,8 +50,15 @@ export default class BoardPresenter {
     this.#pointPresenter.get(updatedPoint.id).init(updatedPoint, this.#boardDestination[0]);
   };
 
+  #handleSortTypeChange = (sortType) => {
+    // - Сортируем задачи
+    // - Очищаем список
+    // - Рендерим список заново
+  };
+
   #renderSort = () => {
     render(this.#sortComponent, this.#boardContainer, RenderPosition.AFTERBEGIN);
+    this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
   };
 
   #renderNoTasks = () => {
