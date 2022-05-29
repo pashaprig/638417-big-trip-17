@@ -2,11 +2,8 @@ import { isEscapePressed } from '../utils';
 import PointItemView from '../view/point-item/point-item-view';
 import EditFormView from '../view/edit-form/edit-form-view';
 import { render, replace, remove } from '../framework/render.js';
+import { Mode } from '../const';
 
-const Mode = {
-  DEFAULT: 'DEFAULT',
-  EDITING: 'EDITING',
-};
 
 export default class PointPresenter {
   #pointListContainer = null;

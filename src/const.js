@@ -10,4 +10,9 @@ const SortType = {
   TIME: 'time',
 };
 
-export {FilterType, SortType};
+const Mode = {
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING',
+};
+
+export {FilterType, SortType, Mode};

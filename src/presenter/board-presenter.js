@@ -3,7 +3,8 @@ import PiontListEmptyView from '../view/point-list-empty/point-list-empty-view';
 import { render, RenderPosition } from '../framework/render.js';
 import SortView from '../view/sort/sort-view';
 import PointPresenter from './point-presenter';
-import { updateItem } from '../utils';
+import { updateItem, sortPointByPrice, sortByTime } from '../utils';
+import { SortType } from '../const';
 
 export default class BoardPresenter {
   #boardContainer = null;
@@ -12,6 +13,8 @@ export default class BoardPresenter {
   #boardDestination = null;
   #boardPoints = [];
   #pointPresenter = new Map();
+  #currentSortType = SortType.DEFAULT;
+  #sourcedBoardPoints = [];
 
   #piontListComponent = new PiontListView();
   #piontListEmptyComponent = new PiontListEmptyView();
@@ -26,6 +29,9 @@ export default class BoardPresenter {
   init() { // Инициация пресентера
     this.#boardPoints = [...this.#pointsModel.points]; //Создаёт точки
     this.#boardDestination = this.#destinationModel.getDestinations(); //Создаёт информацию про точки
+
+    // исходный массив:
+    this.#sourcedBoardPoints = [...this.#pointsModel.points];
 
     this.#renderBoard();
   }
@@ -47,11 +53,31 @@ export default class BoardPresenter {
 
   #handlePointChange = (updatedPoint) => {
     this.#boardPoints = updateItem(this.#boardPoints, updatedPoint);
+    this.#sourcedBoardPoints = updateItem(this.#sourcedBoardPoints, updatedPoint);
     this.#pointPresenter.get(updatedPoint.id).init(updatedPoint, this.#boardDestination[0]);
   };
 
+  #sortPoints = (sortType) => {
+    switch (sortType) {
+      case sortType.PRICE:
+        this.#boardPoints.sort(sortPointByPrice);
+        break;
+      case sortType.TIME:
+        this.#boardPoints.sort(sortByTime);
+        break;
+      default:
+        this.#boardPoints = [...this.#sourcedBoardPoints];
+    }
+
+    this.#currentSortType = sortType;
+  };
+
   #handleSortTypeChange = (sortType) => {
-    // - Сортируем задачи
+    if (this.#currentSortType === sortType) {
+      return;
+    }
+
+    this.#sortPoints(sortType);
     // - Очищаем список
     // - Рендерим список заново
   };

@@ -12,11 +12,12 @@ export default class SortView extends AbstractView {
   };
 
   #sortTypeChangeHandler = (evt) => {
-    if (evt.target.tagName !== 'INPUT') {
+    if (evt.target.tagName !== 'LABEL') {
       return;
     }
 
-    evt.preventDefault();
+    const attributeTarget = evt.target.getAttribute('for');
+    this.element.querySelector(`#${attributeTarget}`).checked = true;
     this._callback.sortTypeChange(evt.target.dataset.sortType);
   };
 }
