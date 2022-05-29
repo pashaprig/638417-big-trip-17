@@ -112,7 +112,6 @@ const filter = {
   [FilterType.ALL]: (points) => points,
   [FilterType.FUTURE]: (points) => points.filter((point) => isPointInFuture(point.dateFrom) && isPointInPresent(point.dateFrom)),
   [FilterType.PAST]: (points) => points.filter((point) => isPointInPast(point.dateTo)),
-  [FilterType.EVERYTHING]: (points) => points.filter((point) => isPointInPast(point.dateFrom) && isPointInFuture(point.dateTo)),
 };
 
 export { getRandomInteger, getRandomArrayElement, getRandomMultipleArrayElement, getDurationDates, getTitle, isEscapePressed, updateItem, sortPointByPrice, sortByTime, filter };
