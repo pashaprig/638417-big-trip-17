@@ -32,19 +32,17 @@ export default class BoardPresenter {
 
     // исходный массив:
     this.#sourcedBoardPoints = [...this.#pointsModel.points];
-
     this.#renderBoard();
   }
 
   #renderBoard() { //Отрисовывает контейнер для точек
     if (!this.#boardPoints.length) {
-      this.#renderNoTasks(); //Отрисовать заглушку в контейнер, если нет точек
+      this.#renderNoTasks();
       return;
     }
-    this.#renderSort(); // Отрисовывает элементы сортировки в контейнер
-    this.#renderPiontList(); // Отрисовывает обёртку списка в контейнер
-    this.#boardPoints.forEach((point) => this.#renderPoint(point, this.#boardDestination[0])); //Рендерит каждую точку из массива точек, плюс добавляет информацию про точку
-
+    this.#renderSort();
+    this.#renderPointList();
+    this.#renderPoints();
   }
 
   #handleModeChange = () => {
@@ -59,10 +57,10 @@ export default class BoardPresenter {
 
   #sortPoints = (sortType) => {
     switch (sortType) {
-      case sortType.PRICE:
+      case SortType.PRICE:
         this.#boardPoints.sort(sortPointByPrice);
         break;
-      case sortType.TIME:
+      case SortType.TIME:
         this.#boardPoints.sort(sortByTime);
         break;
       default:
@@ -78,8 +76,8 @@ export default class BoardPresenter {
     }
 
     this.#sortPoints(sortType);
-    // - Очищаем список
-    // - Рендерим список заново
+    this.#clearPointList();
+    this.#renderPoints();
   };
 
   #renderSort = () => {
@@ -87,11 +85,11 @@ export default class BoardPresenter {
     this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
   };
 
-  #renderNoTasks = () => {
+  #renderNoTasks = () => { //Отрисовать заглушку в контейнер, если нет точек
     render(this.#piontListEmptyComponent, this.#boardContainer, RenderPosition.AFTERBEGIN);
   };
 
-  #renderPiontList = () => {
+  #renderPointList = () => { //Отрисовывает список для точек
     render(this.#piontListComponent, this.#boardContainer, RenderPosition.BEFOREEND);
   };
 
@@ -100,6 +98,10 @@ export default class BoardPresenter {
     pointPresenter.init(point, destination);
     this.#pointPresenter.set(point.id, pointPresenter);
   }
+
+  #renderPoints = () => { //Отрисовывает точки
+    this.#boardPoints.forEach((point) => this.#renderPoint(point, this.#boardDestination[0]));
+  };
 
   #clearPointList = () => {
     this.#pointPresenter.forEach((presenter) => presenter.destroy());
