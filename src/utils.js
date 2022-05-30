@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc.js';
 import minMax from 'dayjs/plugin/minMax.js';
 import duration from 'dayjs/plugin/duration.js';
+import { FilterType } from './const';
 dayjs.extend(utc);
 dayjs.extend(minMax);
 dayjs.extend(duration);
@@ -27,8 +28,8 @@ const getRandomMultipleArrayElement = (elements) => {
   return array;
 };
 
-const getDurationDates = (dateStart, dateFinish) => {
-  const diff = dateFinish.diff(dateStart);
+const getDurationDates = (dateFrom, dateTo) => {
+  const diff = dateTo.diff(dateFrom);
   const daysCount = dayjs.duration(diff).format('DD');
   const hoursCount = dayjs.duration(diff).format('HH');
   const minutesCount = dayjs.duration(diff).format('mm');
@@ -70,4 +71,47 @@ const updateItem = (items, update) => {
   ];
 };
 
-export { getRandomInteger, getRandomArrayElement, getRandomMultipleArrayElement, getDurationDates, getTitle, isEscapePressed, updateItem };
+// Сравнение цены
+const comparePrice = (priceA, priceB) => {
+  if (priceA > priceB) {
+    return -1;
+  }
+  if (priceA < priceB) {
+    return 1;
+  }
+  return 0;
+};
+
+//Функция сортировки по цене для передачи в метод sort
+const sortPointByPrice = (pointA, pointB) => comparePrice(pointA.basePrice, pointB.basePrice);
+
+//Сравнение времени
+const compareTime = (timeA, timeB) => {
+  if (timeA > timeB) {
+    return 1;
+  }
+  if (timeA < timeB) {
+    return -1;
+  }
+  return 0;
+};
+
+//Функция сортировки по времени для передачи в метод sort
+const sortByTime = (pointA, pointB) => {
+  const timeA = pointA.dateFrom.diff(pointA.dateTo);
+  const timeB = pointB.dateFrom.diff(pointB.dateTo);
+  return compareTime(timeA, timeB);
+};
+
+
+const isPointInPast = (dueDate) => dayjs().isAfter(dueDate, 'D');
+const isPointInFuture = (dueDate) => dayjs().isBefore(dueDate, 'D');
+const isPointInPresent = (dueDate) => dayjs().isSame(dueDate, 'D');
+
+const filter = {
+  [FilterType.ALL]: (points) => points,
+  [FilterType.FUTURE]: (points) => points.filter((point) => isPointInFuture(point.dateFrom) && isPointInPresent(point.dateFrom)),
+  [FilterType.PAST]: (points) => points.filter((point) => isPointInPast(point.dateTo)),
+};
+
+export { getRandomInteger, getRandomArrayElement, getRandomMultipleArrayElement, getDurationDates, getTitle, isEscapePressed, updateItem, sortPointByPrice, sortByTime, filter };

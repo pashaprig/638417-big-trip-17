@@ -3,7 +3,8 @@ import PiontListEmptyView from '../view/point-list-empty/point-list-empty-view';
 import { render, RenderPosition } from '../framework/render.js';
 import SortView from '../view/sort/sort-view';
 import PointPresenter from './point-presenter';
-import { updateItem } from '../utils';
+import { updateItem, sortPointByPrice, sortByTime } from '../utils';
+import { SortType } from '../const';
 
 export default class BoardPresenter {
   #boardContainer = null;
@@ -12,6 +13,8 @@ export default class BoardPresenter {
   #boardDestination = null;
   #boardPoints = [];
   #pointPresenter = new Map();
+  #currentSortType = SortType.DEFAULT;
+  #sourcedBoardPoints = [];
 
   #piontListComponent = new PiontListView();
   #piontListEmptyComponent = new PiontListEmptyView();
@@ -27,17 +30,19 @@ export default class BoardPresenter {
     this.#boardPoints = [...this.#pointsModel.points]; //Создаёт точки
     this.#boardDestination = this.#destinationModel.getDestinations(); //Создаёт информацию про точки
 
+    // исходный массив:
+    this.#sourcedBoardPoints = [...this.#pointsModel.points];
     this.#renderBoard();
   }
 
   #renderBoard() { //Отрисовывает контейнер для точек
     if (!this.#boardPoints.length) {
-      this.#renderNoTasks(); //Отрисовать заглушку в контейнер, если нет точек
-    } else {
-      this.#renderSort(); // Отрисовывает элементы сортировки в контейнер
-      this.#renderPiontList(); // Отрисовывает обёрту списка в контейнер
-      this.#boardPoints.forEach((point) => this.#renderPoint(point, this.#boardDestination[0])); //Рендерит каждую точку из массива точек, плюс добавляет информацию про точку
+      this.#renderNoTasks();
+      return;
     }
+    this.#renderSort();
+    this.#renderPointList();
+    this.#renderPoints();
   }
 
   #handleModeChange = () => {
@@ -46,18 +51,45 @@ export default class BoardPresenter {
 
   #handlePointChange = (updatedPoint) => {
     this.#boardPoints = updateItem(this.#boardPoints, updatedPoint);
-    this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);
+    this.#sourcedBoardPoints = updateItem(this.#sourcedBoardPoints, updatedPoint);
+    this.#pointPresenter.get(updatedPoint.id).init(updatedPoint, this.#boardDestination[0]);
+  };
+
+  #sortPoints = (sortType) => {
+    switch (sortType) {
+      case SortType.PRICE:
+        this.#boardPoints.sort(sortPointByPrice);
+        break;
+      case SortType.TIME:
+        this.#boardPoints.sort(sortByTime);
+        break;
+      default:
+        this.#boardPoints = [...this.#sourcedBoardPoints];
+    }
+
+    this.#currentSortType = sortType;
+  };
+
+  #handleSortTypeChange = (sortType) => {
+    if (this.#currentSortType === sortType) {
+      return;
+    }
+
+    this.#sortPoints(sortType);
+    this.#clearPointList();
+    this.#renderPoints();
   };
 
   #renderSort = () => {
     render(this.#sortComponent, this.#boardContainer, RenderPosition.AFTERBEGIN);
+    this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
   };
 
-  #renderNoTasks = () => {
+  #renderNoTasks = () => { //Отрисовать заглушку в контейнер, если нет точек
     render(this.#piontListEmptyComponent, this.#boardContainer, RenderPosition.AFTERBEGIN);
   };
 
-  #renderPiontList = () => {
+  #renderPointList = () => { //Отрисовывает список для точек
     render(this.#piontListComponent, this.#boardContainer, RenderPosition.BEFOREEND);
   };
 
@@ -66,6 +98,10 @@ export default class BoardPresenter {
     pointPresenter.init(point, destination);
     this.#pointPresenter.set(point.id, pointPresenter);
   }
+
+  #renderPoints = () => { //Отрисовывает точки
+    this.#boardPoints.forEach((point) => this.#renderPoint(point, this.#boardDestination[0]));
+  };
 
   #clearPointList = () => {
     this.#pointPresenter.forEach((presenter) => presenter.destroy());
