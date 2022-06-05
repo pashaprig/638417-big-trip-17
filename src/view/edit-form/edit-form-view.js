@@ -17,6 +17,12 @@ export default class EditFormView extends AbstractStatefulView {
     return createNewEditFormTemplate(this._state, this.#destination);
   }
 
+  reset = (point) => {
+    this.updateElement(
+      EditFormView.parsePointToState(point),
+    );
+  };
+
   _restoreHandlers = () => {
     this.#setInnerHandlers();
     this.setFormSubmitHandler(this._callback.formSubmit);
