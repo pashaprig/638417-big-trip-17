@@ -3,7 +3,7 @@ import PointModel from './model/point-items-model';
 import BoardPresenter from './presenter/board-presenter';
 import { render } from './framework/render.js';
 import FilterView from './view/filter/filter-view';
-import {generateFilter} from './mock/filter';
+import {generateFilter} from './utils';
 
 const pageHeader = document.querySelector('.page-header');
 const tripControls = pageHeader.querySelector('.trip-controls__filters'); //Блок в хедере страницы для отрисовки контролов

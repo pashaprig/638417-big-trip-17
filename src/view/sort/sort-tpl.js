@@ -1,4 +1,4 @@
-import {SortType} from '../../const';
+import {SortType} from '../../consts';
 
 const createSortTemplate = () => (
   `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">

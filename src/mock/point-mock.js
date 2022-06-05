@@ -10,13 +10,12 @@ dayjs.extend(minMax);
 
 
 const genearateDate = () => {
-  const maxDaysGap = 10;
-  const maxTimeGap = 10;
-  const firstDayGap = getRandomInteger(-maxDaysGap, maxDaysGap);
-  const secondDayGap = getRandomInteger(firstDayGap, maxDaysGap);
+  const daysGap = 10;
+  const firstDayGap = getRandomInteger(-daysGap, daysGap);
+  const secondDayGap = getRandomInteger(firstDayGap, daysGap);
   return {
-    dateFrom: dayjs.utc().add(firstDayGap, 'day').add(getRandomInteger(0, maxTimeGap), 'minute').add(getRandomInteger(0, maxTimeGap), 'hour'),
-    dateTo: dayjs.utc().add(secondDayGap, 'day').add(getRandomInteger(0, maxTimeGap), 'minute').add(getRandomInteger(0, maxTimeGap), 'hour'),
+    dateFrom: dayjs.utc().add(firstDayGap, 'day').add(getRandomInteger(0, daysGap), 'minute').add(getRandomInteger(0, daysGap), 'hour'),
+    dateTo: dayjs.utc().add(secondDayGap, 'day').add(getRandomInteger(0, daysGap), 'minute').add(getRandomInteger(0, daysGap), 'hour'),
   };
 };
 
