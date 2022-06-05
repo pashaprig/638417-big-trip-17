@@ -27,7 +27,7 @@ const getPicture = (trip) => {
   return picturesTemplate;
 };
 
-const createNewEditFormTemplate = (boardPoint, boardDestination) => {
+const createNewEditFormTemplate = (point, boardDestination) => {
   const {
     basePrice,
     dateFrom,
@@ -35,7 +35,7 @@ const createNewEditFormTemplate = (boardPoint, boardDestination) => {
     destination,
     offers,
     type
-  } = boardPoint;
+  } = point;
 
   const {
     description,
@@ -96,7 +96,7 @@ const createNewEditFormTemplate = (boardPoint, boardDestination) => {
            </div>
            <div class="event__field-group  event__field-group--destination">
              <label class="event__label  event__type-output" for="event-destination-1">
-               ${type} ${getTitle(boardPoint)}
+               ${type} ${getTitle(point)}
              </label>
              <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value=${destination} list="destination-list-1">
              <datalist id="destination-list-1">

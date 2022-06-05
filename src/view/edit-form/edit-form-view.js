@@ -1,18 +1,18 @@
-import AbstractView from '../../framework/view/abstract-view.js';
-import createNewEditFormTemplate from './edit-form-tpl.js';
+import AbstractStatefulView from '../../framework/view/abstract-stateful-view';
+import createNewEditFormTemplate from './edit-form-tpl';
 
-export default class EditFormView extends AbstractView {
-  #boardPoint = null;
-  #boardDestination = null;
+export default class EditFormView extends AbstractStatefulView {
 
-  constructor(boardPoint, boardDestination){
+  #destination = null;
+
+  constructor(point, destination) {
     super();
-    this.#boardPoint = boardPoint;
-    this.#boardDestination = boardDestination;
+    this._state = EditFormView.parsePointToState(point);
+    this.#destination = destination;
   }
 
   get template() {
-    return createNewEditFormTemplate(this.#boardPoint, this.#boardDestination);
+    return createNewEditFormTemplate(this._state, this.#destination);
   }
 
   setFormSubmitHandler = (callback) => {
@@ -22,7 +22,7 @@ export default class EditFormView extends AbstractView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this._callback.formSubmit(this.#boardPoint, this.#boardDestination);
+    this._callback.formSubmit(EditFormView.parseStateToPoint(this._state), this.#destination);
   };
 
   setFormButtonCloseHandler = (callback) => {
@@ -32,5 +32,28 @@ export default class EditFormView extends AbstractView {
 
   #formButtonCloseHandler = () => {
     this._callback.buttonClose();
+  };
+
+  static parsePointToState = (point) => ({
+    ...point,
+    checkedType: point.type,
+    checkedDestination: point.destination
+  });
+
+  static parseStateToPoint = (state) => {
+    const point = { ...state };
+
+    if (point.checkedType !== point.type) {
+      point.type = point.checkedType;
+    }
+
+    if (point.checkedDestination !== point.destination) {
+      point.destination = point.checkedDestination;
+    }
+
+    delete point.checkedType;
+    delete point.checkedDestination;
+
+    return point;
   };
 }
