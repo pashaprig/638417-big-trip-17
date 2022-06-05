@@ -9,6 +9,9 @@ export default class EditFormView extends AbstractStatefulView {
     super();
     this._state = EditFormView.parsePointToState(point);
     this.#destination = destination;
+
+    this.element.querySelector('.event__type-btn').addEventListener('click', this.#pointTypeClickHandler);
+    this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
   }
 
   get template() {
@@ -32,6 +35,23 @@ export default class EditFormView extends AbstractStatefulView {
 
   #formButtonCloseHandler = () => {
     this._callback.buttonClose();
+  };
+
+  #pointTypeClickHandler = (evt) => {
+    if (!evt.target.classList.contains('event__type-label')) {
+      return;
+    }
+
+    this.updateElement({
+      checkedType: evt.target.parentNode.querySelector('.event__type-input').value,
+    });
+
+  };
+
+  #destinationChangeHandler = (evt) => {
+    this.updateElement({
+      checkedDestination: evt.target.value,
+    });
   };
 
   static parsePointToState = (point) => ({
