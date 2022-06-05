@@ -10,13 +10,18 @@ export default class EditFormView extends AbstractStatefulView {
     this._state = EditFormView.parsePointToState(point);
     this.#destination = destination;
 
-    this.element.querySelector('.event__type-btn').addEventListener('click', this.#pointTypeClickHandler);
-    this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
+    this.#setInnerHandlers();
   }
 
   get template() {
     return createNewEditFormTemplate(this._state, this.#destination);
   }
+
+  _restoreHandlers = () => {
+    this.#setInnerHandlers();
+    this.setFormSubmitHandler(this._callback.formSubmit);
+    this.setFormButtonCloseHandler(this._callback.click);
+  };
 
   setFormSubmitHandler = (callback) => {
     this._callback.formSubmit = callback;
@@ -52,6 +57,11 @@ export default class EditFormView extends AbstractStatefulView {
     this.updateElement({
       checkedDestination: evt.target.value,
     });
+  };
+
+  #setInnerHandlers = () => {
+    this.element.querySelector('.event__type-btn').addEventListener('click', this.#pointTypeClickHandler);
+    this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
   };
 
   static parsePointToState = (point) => ({
