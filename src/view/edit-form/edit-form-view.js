@@ -53,6 +53,7 @@ export default class EditFormView extends AbstractStatefulView {
     if (evt.target.name !== 'event-type') {
       return;
     }
+
     this.updateElement({
       checkedType: evt.target.value
     });
