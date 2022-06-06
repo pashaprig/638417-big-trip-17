@@ -1,7 +1,6 @@
+import { TYPES_LIBRARY } from '../consts.js';
 import {getRandomInteger, getRandomArrayElement} from '../utils.js';
 
-
-const TYPES_LIBRARY = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 
 const OFFERS_TITLE = ['Upgrade to a business class', 'Add luggage', 'Switch to comfort class', 'Add meal', 'Choose seats', 'Travel by train', 'Choose the radio station'];
 

@@ -1,3 +1,4 @@
+import { DEFAULT_POINT } from '../../consts';
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view';
 import createNewEditFormTemplate from './edit-form-tpl';
 
@@ -5,11 +6,10 @@ export default class EditFormView extends AbstractStatefulView {
 
   #destination = null;
 
-  constructor(point, destination) {
+  constructor(point = DEFAULT_POINT, destination) {
     super();
     this._state = EditFormView.parsePointToState(point);
     this.#destination = destination;
-
     this.#setInnerHandlers();
   }
 
@@ -26,7 +26,7 @@ export default class EditFormView extends AbstractStatefulView {
   _restoreHandlers = () => {
     this.#setInnerHandlers();
     this.setFormSubmitHandler(this._callback.formSubmit);
-    this.setFormButtonCloseHandler(this._callback.click);
+    this.setFormButtonCloseHandler(this._callback.buttonClose);
   };
 
   setFormSubmitHandler = (callback) => {
@@ -48,27 +48,34 @@ export default class EditFormView extends AbstractStatefulView {
     this._callback.buttonClose();
   };
 
-  #pointTypeClickHandler = (evt) => {
-    if (!evt.target.classList.contains('event__type-label')) {
+  #changeTypeHandler = (evt) => {
+    evt.preventDefault();
+    if (evt.target.name !== 'event-type') {
       return;
     }
-
     this.updateElement({
-      checkedType: evt.target.parentNode.querySelector('.event__type-input').value,
+      checkedType: evt.target.value
     });
+  };
 
+  #focusDestinationHandler = (evt) => {
+    evt.preventDefault();
+    evt.target.value = ''; // при фокусе обнуляем строку
   };
 
   #destinationChangeHandler = (evt) => {
-    this.updateElement({
-      checkedDestination: evt.target.value,
+    evt.preventDefault();
+    this._setState({
+      checkedDestination: evt.target.value
     });
   };
 
   #setInnerHandlers = () => {
-    this.element.querySelector('.event__type-btn').addEventListener('click', this.#pointTypeClickHandler);
+    this.element.querySelector('.event__type-list').addEventListener('change', this.#changeTypeHandler);
+    this.element.querySelector('.event__input--destination').addEventListener('focus', this.#focusDestinationHandler);
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
   };
+
 
   static parsePointToState = (point) => ({
     ...point,

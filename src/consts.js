@@ -15,4 +15,22 @@ const Mode = {
   EDITING: 'EDITING',
 };
 
-export {FilterType, SortType, Mode};
+const DEFAULT_POINT = {
+  type: '',
+  destination: null,
+  basePrice: '',
+  dateFrom: '',
+  dateTo: '',
+  id: '',
+  offers: [],
+};
+
+const sotrEnum = {
+  day:'sort-day',
+  time:'sort-time',
+  price:'sort-price',
+};
+
+const TYPES_LIBRARY = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+
+export {FilterType, SortType, Mode, TYPES_LIBRARY, DEFAULT_POINT, sotrEnum};

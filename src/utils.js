@@ -121,4 +121,6 @@ const generateFilter = (points) => Object.entries(filter).map(
   })
 );
 
-export { getRandomInteger, getRandomArrayElement, getRandomMultipleArrayElement, getDurationDates, getTitle, isEscapePressed, updateItem, sortPointByPrice, sortByTime, filter, generateFilter };
+const capitalise = (word) => word.slice(0, 1).toUpperCase() + word.slice(1);
+
+export { getRandomInteger, getRandomArrayElement, getRandomMultipleArrayElement, getDurationDates, getTitle, isEscapePressed, updateItem, sortPointByPrice, sortByTime, filter, generateFilter, capitalise };
