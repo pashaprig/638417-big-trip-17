@@ -1,10 +1,11 @@
-import {createTypes} from './offer-mock.js';
+import {allOffers} from './offer-mock.js';
 import {createDestinations} from './destination-mock.js';
 import {getRandomInteger, getRandomArrayElement} from '../utils.js';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc.js';
 import minMax from 'dayjs/plugin/minMax.js';
 import { nanoid } from 'nanoid';
+import { TYPES_LIBRARY } from '../consts.js';
 dayjs.extend(utc);
 dayjs.extend(minMax);
 
@@ -20,7 +21,9 @@ const genearateDate = () => {
 };
 
 export const generatePoint = () => {
-  const offers = getRandomArrayElement(createTypes());
+  const pointType = getRandomArrayElement(TYPES_LIBRARY);
+  const offers = allOffers.find((offer) => offer.type === pointType);
+
   return {
     id: nanoid(),
     basePrice: getRandomInteger(10, 1000),

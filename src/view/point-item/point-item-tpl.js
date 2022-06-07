@@ -3,7 +3,7 @@ import { getTitle } from '../../utils';
 
 const getOffers = (trip) => {
   let offersTemplate = '';
-  trip.forEach((offer) =>{
+  trip.forEach((offer) => {
     offersTemplate += `
     <li class="event__offer">
       <span class="event__offer-title">${offer.title}</span>

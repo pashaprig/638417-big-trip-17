@@ -1,4 +1,3 @@
-import { DEFAULT_POINT } from '../../consts';
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view';
 import createNewEditFormTemplate from './edit-form-tpl';
 
@@ -6,7 +5,7 @@ export default class EditFormView extends AbstractStatefulView {
 
   #destination = null;
 
-  constructor(point = DEFAULT_POINT, destination) {
+  constructor(point, destination) {
     super();
     this._state = EditFormView.parsePointToState(point);
     this.#destination = destination;

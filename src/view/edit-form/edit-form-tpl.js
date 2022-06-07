@@ -1,10 +1,10 @@
 import { TYPES_LIBRARY } from '../../consts';
 import { capitalise, getTitle } from '../../utils';
 
-const getOffers = (trip) => {
+const getOffers = (offers) => {
 
   let offersTemplate = '';
-  trip.forEach((offer) => {
+  offers.forEach((offer) => {
     offersTemplate += `
     <div class="event__offer-selector">
      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.title}-1" type="checkbox" name="event-offer-${offer.title}" checked>
@@ -80,7 +80,7 @@ const createNewEditFormTemplate = (point, boardDestination) => {
            </div>
            <div class="event__field-group  event__field-group--destination">
              <label class="event__label  event__type-output" for="event-destination-1">
-               ${type} ${getTitle(point)}
+               ${checkedType ? checkedType : type} ${getTitle(point)}
              </label>
              <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value=${destination} list="destination-list-1">
              <datalist id="destination-list-1">
