@@ -4,7 +4,7 @@ import { render, RenderPosition } from '../framework/render.js';
 import SortView from '../view/sort/sort-view';
 import PointPresenter from './point-presenter';
 import { updateItem, sortPointByPrice, sortByTime } from '../utils';
-import { SortType } from '../const';
+import { SortType } from '../consts';
 
 export default class BoardPresenter {
   #boardContainer = null;
@@ -63,7 +63,7 @@ export default class BoardPresenter {
       case SortType.TIME:
         this.#boardPoints.sort(sortByTime);
         break;
-      default:
+      case SortType.DEFAULT:
         this.#boardPoints = [...this.#sourcedBoardPoints];
     }
 

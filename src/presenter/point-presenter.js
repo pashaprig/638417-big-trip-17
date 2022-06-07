@@ -2,7 +2,7 @@ import { isEscapePressed } from '../utils';
 import PointItemView from '../view/point-item/point-item-view';
 import EditFormView from '../view/edit-form/edit-form-view';
 import { render, replace, remove } from '../framework/render.js';
-import { Mode } from '../const';
+import { Mode } from '../consts';
 
 
 export default class PointPresenter {
@@ -62,6 +62,7 @@ export default class PointPresenter {
 
   resetView = () => {
     if (this.#mode !== Mode.DEFAULT) {
+      this.#editFormComponent.reset(this.#point);
       this.#replaceEditFormToPoint();
     }
   };
@@ -82,6 +83,7 @@ export default class PointPresenter {
   #escKeyDownHandler = (evt) => { //Отработка нажатия на Esc
     if (isEscapePressed(evt)) {
       evt.preventDefault();
+      this.#editFormComponent.reset(this.#point);
       this.#replaceEditFormToPoint();
       document.removeEventListener('keydown', this.#escKeyDownHandler);
     }
@@ -92,7 +94,7 @@ export default class PointPresenter {
   };
 
   #handleFavoriteClick = () => {
-    this.#changeData({...this.#point, isFavorite: !this.#point.isFavorite}); // changeData если нажать на звёздочку, не могу понять, что провоцирует ошибку
+    this.#changeData({...this.#point, isFavorite: !this.#point.isFavorite});
   };
 
   #handleCloseClick = () => {

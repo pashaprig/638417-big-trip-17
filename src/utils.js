@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc.js';
 import minMax from 'dayjs/plugin/minMax.js';
 import duration from 'dayjs/plugin/duration.js';
-import { FilterType } from './const';
+import { FilterType } from './consts';
 dayjs.extend(utc);
 dayjs.extend(minMax);
 dayjs.extend(duration);
@@ -114,4 +114,13 @@ const filter = {
   [FilterType.PAST]: (points) => points.filter((point) => isPointInPast(point.dateTo)),
 };
 
-export { getRandomInteger, getRandomArrayElement, getRandomMultipleArrayElement, getDurationDates, getTitle, isEscapePressed, updateItem, sortPointByPrice, sortByTime, filter };
+const generateFilter = (points) => Object.entries(filter).map(
+  ([filterName, filterPoints]) => ({
+    name: filterName,
+    count: filterPoints(points).length,
+  })
+);
+
+const capitalise = (word) => word.slice(0, 1).toUpperCase() + word.slice(1);
+
+export { getRandomInteger, getRandomArrayElement, getRandomMultipleArrayElement, getDurationDates, getTitle, isEscapePressed, updateItem, sortPointByPrice, sortByTime, filter, generateFilter, capitalise };
