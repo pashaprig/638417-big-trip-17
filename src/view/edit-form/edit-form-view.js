@@ -54,7 +54,8 @@ export default class EditFormView extends AbstractStatefulView {
     }
 
     this.updateElement({
-      checkedType: evt.target.value
+      checkedType: evt.target.value,
+      offers: [], // Вот тут я так понимаю
     });
   };
 
