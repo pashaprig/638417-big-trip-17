@@ -14,7 +14,7 @@ export default class PointPresenter {
   #editFormComponent = null;
 
   #point = null;
-  #destination = null;
+  #offers = null;
   #mode = Mode.DEFAULT;
 
   constructor(pointListContainer, changeData, changeMode) {
@@ -23,15 +23,15 @@ export default class PointPresenter {
     this.#changeMode = changeMode;
   }
 
-  init = (point, destination) => {
+  init = (point, offers) => {
     this.#point = point;
-    this.#destination = destination;
+    this.#offers = offers;
 
     const prevPointComponent = this.#pointComponent;
     const prevEditFormComponent = this.#editFormComponent;
 
     this.#pointComponent = new PointItemView(point); //Вьюха точки
-    this.#editFormComponent = new EditFormView(point, destination); //Вьюха формы редактирования
+    this.#editFormComponent = new EditFormView(point, this.#offers); //Вьюха формы редактирования
 
     this.#pointComponent.setPointButtonOpenHandler(this.#handleEditClick);
     this.#pointComponent.setFavoriteClickHandler(this.#handleFavoriteClick);

@@ -1,19 +1,32 @@
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view';
 import createNewEditFormTemplate from './edit-form-tpl';
 
+const BLANK_POINT = {
+  basePrice: '',
+  dateFrom: null,
+  dateTo: null,
+  destination: 'Kyiv',
+  offers: [],
+  type: 'flight',
+  isFavorite: false,
+  isStatusCreate: true,
+};
+
 export default class EditFormView extends AbstractStatefulView {
+  #allOffers = null;
 
-  #destination = null;
-
-  constructor(point, destination) {
+  constructor(point = BLANK_POINT, allOffers) {
     super();
+
     this._state = EditFormView.parsePointToState(point);
-    this.#destination = destination;
+
+    this.#allOffers = allOffers;
+
     this.#setInnerHandlers();
   }
 
   get template() {
-    return createNewEditFormTemplate(this._state, this.#destination);
+    return createNewEditFormTemplate(this._state, this.#allOffers);
   }
 
   reset = (point) => {
@@ -35,7 +48,7 @@ export default class EditFormView extends AbstractStatefulView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this._callback.formSubmit(EditFormView.parseStateToPoint(this._state), this.#destination);
+    this._callback.formSubmit(EditFormView.parseStateToPoint(this._state));
   };
 
   setFormButtonCloseHandler = (callback) => {
