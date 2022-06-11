@@ -1,12 +1,12 @@
 import { CITIES_LIBRARY, TYPES_LIBRARY } from '../../consts';
 import { capitalise, getTitle } from '../../utils';
 
-const getOffers = (checkedType, offers/*, checkedOffers*/) => {
+const getOffers = (checkedType, offers) => {
   const pointTypeOffer = offers.find((offer) => offer.type === checkedType);
+
 
   let offersTemplate = '';
   pointTypeOffer.offers.forEach((offer) => {
-    // const checked = checkedOffers.includes(offer.id) ? 'checked' : '';
     offersTemplate += `
     <div class="event__offer-selector">
      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.title}-${offer.id}" type="checkbox" name="event-offer-${offer.title}" checked>
@@ -20,13 +20,19 @@ const getOffers = (checkedType, offers/*, checkedOffers*/) => {
   return offersTemplate;
 };
 
-const getPicture = (trip) => {
+const getPicture = (checkedDestination, destinations) => {
+  const pointDestination = destinations.find((destination) => destination.name === checkedDestination);
   let picturesTemplate = '';
-  trip.forEach((pictures) => {picturesTemplate += `<img class="event__photo" src=${pictures.src} alt="${pictures.description}">`;});
+  pointDestination.pictures.forEach((picture) => {picturesTemplate += `<img class="event__photo" src=${picture.src} alt="${picture.description}">`;});
   return picturesTemplate;
 };
 
-const createNewEditFormTemplate = (point, offers) => {
+const getDescription = (checkedDestination, destinations) => {
+  const pointDestination = destinations.find((destination) => destination.name === checkedDestination);
+  return pointDestination.description;
+};
+
+const createNewEditFormTemplate = (data = {}, offers, allDestinations) => {
   const {
     basePrice,
     dateFrom,
@@ -35,9 +41,8 @@ const createNewEditFormTemplate = (point, offers) => {
     type,
     id,
     checkedType,
-    description,
-    pictures
-  } = point;
+    checkedDestination,
+  } = data;
 
   return (
     ` <li class="trip-events__item">
@@ -62,20 +67,14 @@ const createNewEditFormTemplate = (point, offers) => {
                     <label class="event__type-label  event__type-label--${eventType}"
                            for="event-type-${eventType}-${id}">${capitalise(eventType)}</label>
                   </div>`)).join('')}
-
-                 <div class="event__type-item">
-                   <input id="event-type-taxi-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="taxi">
-                   <label class="event__type-label  event__type-label--taxi" for="event-type-taxi-1">Taxi</label>
-                 </div>
-
                </fieldset>
              </div>
            </div>
            <div class="event__field-group  event__field-group--destination">
              <label class="event__label  event__type-output" for="event-destination-1">
-               ${checkedType ? checkedType : type} ${getTitle(point)}
+               ${checkedType ? checkedType : type} ${getTitle(data)}
              </label>
-             <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value=${destination} list="destination-list-1">
+             <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value=${checkedDestination ? checkedDestination : destination} list="destination-list-1">
              <datalist id="destination-list-1">
               ${CITIES_LIBRARY.map((city) => (`<option value=${city}></option>`)).join('')}
              </datalist>
@@ -109,10 +108,10 @@ const createNewEditFormTemplate = (point, offers) => {
            </section>
            <section class="event__section  event__section--destination">
              <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-             <p class="event__destination-description">${description}</p>
+             <p class="event__destination-description">${getDescription(checkedDestination, allDestinations)}</p>
              <div class="event__photos-container">
                <div class="event__photos-tape">
-                  ${getPicture(pictures)}
+                  ${getPicture(checkedDestination, allDestinations)}
                 </div>
              </div>
            </section>

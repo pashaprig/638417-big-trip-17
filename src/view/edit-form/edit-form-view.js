@@ -14,19 +14,21 @@ const BLANK_POINT = {
 
 export default class EditFormView extends AbstractStatefulView {
   #allOffers = null;
+  #allDestinations = null;
 
-  constructor(point = BLANK_POINT, allOffers) {
+  constructor(point = BLANK_POINT, allOffers, allDestinations) {
     super();
 
     this._state = EditFormView.parsePointToState(point);
 
     this.#allOffers = allOffers;
+    this.#allDestinations = allDestinations;
 
     this.#setInnerHandlers();
   }
 
   get template() {
-    return createNewEditFormTemplate(this._state, this.#allOffers);
+    return createNewEditFormTemplate(this._state, this.#allOffers, this.#allDestinations);
   }
 
   reset = (point) => {
@@ -79,7 +81,7 @@ export default class EditFormView extends AbstractStatefulView {
 
   #destinationChangeHandler = (evt) => {
     evt.preventDefault();
-    this._setState({
+    this.updateElement({
       checkedDestination: evt.target.value
     });
   };

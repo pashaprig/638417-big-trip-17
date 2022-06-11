@@ -2,7 +2,7 @@ export const createDestinations = () => {
   const destinations = [
     {
       'name': 'Chamonix',
-      'description': 'Chamonix',
+      'description': 'Chamonix description',
       'pictures': [
         {
           'src': 'http://picsum.photos/300/200?r=0.0003286738755539087',

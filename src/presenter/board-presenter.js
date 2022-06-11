@@ -12,8 +12,10 @@ export default class BoardPresenter {
   #pointsModel = null;
 
   #allOffers = allOffers;
+  #destinationModel = null;
 
   #boardPoints = [];
+  #boardDestinations = [];
   #pointPresenter = new Map();
   #currentSortType = SortType.DEFAULT;
   #sourcedBoardPoints = [];
@@ -22,14 +24,15 @@ export default class BoardPresenter {
   #piontListEmptyComponent = new PiontListEmptyView();
   #sortComponent = new SortView();
 
-  constructor(boardContainer, pointsModel) {
+  constructor(boardContainer, pointsModel, destinationModel) {
     this.#boardContainer = boardContainer;
     this.#pointsModel = pointsModel;
+    this.#destinationModel = destinationModel;
   }
 
   init() { // Инициация пресентера
     this.#boardPoints = [...this.#pointsModel.points]; //Создаёт точки
-
+    this.#boardDestinations = [...this.#destinationModel.destinations]; //Создаёт точки
 
     // исходный массив:
     this.#sourcedBoardPoints = [...this.#pointsModel.points];
@@ -53,7 +56,7 @@ export default class BoardPresenter {
   #handlePointChange = (updatedPoint) => {
     this.#boardPoints = updateItem(this.#boardPoints, updatedPoint);
     this.#sourcedBoardPoints = updateItem(this.#sourcedBoardPoints, updatedPoint);
-    this.#pointPresenter.get(updatedPoint.id).init(updatedPoint, this.#allOffers);
+    this.#pointPresenter.get(updatedPoint.id).init(updatedPoint, this.#allOffers, this.#boardDestinations);
   };
 
   #sortPoints = (sortType) => {
@@ -94,14 +97,14 @@ export default class BoardPresenter {
     render(this.#piontListComponent, this.#boardContainer, RenderPosition.BEFOREEND);
   };
 
-  #renderPoint(point, offers) { //Отрисовывает точку
+  #renderPoint(point, offers, destinations) { //Отрисовывает точку
     const pointPresenter = new PointPresenter(this.#piontListComponent.element, this.#handlePointChange, this.#handleModeChange);
-    pointPresenter.init(point, offers);
+    pointPresenter.init(point, offers, destinations);
     this.#pointPresenter.set(point.id, pointPresenter);
   }
 
   #renderPoints = () => { //Отрисовывает точки
-    this.#boardPoints.forEach((point) => this.#renderPoint(point, this.#allOffers));
+    this.#boardPoints.forEach((point) => this.#renderPoint(point, this.#allOffers, this.#boardDestinations));
   };
 
   #clearPointList = () => {
