@@ -36,6 +36,7 @@ export default class BoardPresenter {
 
     // исходный массив:
     this.#sourcedBoardPoints = [...this.#pointsModel.points];
+
     this.#renderBoard();
   }
 

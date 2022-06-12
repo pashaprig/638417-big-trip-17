@@ -9,6 +9,10 @@ dayjs.extend(utc);
 dayjs.extend(minMax);
 dayjs.extend(duration);
 
+const humanizeFormEditTime = (dueDate) => dayjs(dueDate).format('DD/MM/YY HH:mm');
+const humanizePointDueDate = (dueDate) => dayjs(dueDate).format('MMM D');
+const humanizePointDueTime = (dueDate) => dayjs(dueDate).format('HH:mm');
+
 const getRandomInteger = (a = 0, b = 1) => {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
@@ -29,7 +33,7 @@ const getRandomMultipleArrayElement = (elements) => {
 };
 
 const getDurationDates = (dateFrom, dateTo) => {
-  const diff = dateTo.diff(dateFrom);
+  const diff = dayjs(dateTo).diff(dateFrom);
   const daysCount = dayjs.duration(diff).format('DD');
   const hoursCount = dayjs.duration(diff).format('HH');
   const minutesCount = dayjs.duration(diff).format('mm');
@@ -98,8 +102,8 @@ const compareTime = (timeA, timeB) => {
 
 //Функция сортировки по времени для передачи в метод sort
 const sortByTime = (pointA, pointB) => {
-  const timeA = pointA.dateFrom.diff(pointA.dateTo);
-  const timeB = pointB.dateFrom.diff(pointB.dateTo);
+  const timeA = dayjs(pointA.dateFrom).diff(pointA.dateTo);
+  const timeB = dayjs(pointB.dateFrom).diff(pointB.dateTo);
   return compareTime(timeA, timeB);
 };
 
@@ -123,4 +127,4 @@ const generateFilter = (points) => Object.entries(filter).map(
 
 const capitalise = (word) => word.slice(0, 1).toUpperCase() + word.slice(1);
 
-export { getRandomInteger, getRandomArrayElement, getRandomMultipleArrayElement, getDurationDates, getTitle, isEscapePressed, updateItem, sortPointByPrice, sortByTime, filter, generateFilter, capitalise };
+export { getRandomInteger, getRandomArrayElement, getRandomMultipleArrayElement, getDurationDates, getTitle, isEscapePressed, updateItem, sortPointByPrice, sortByTime, filter, generateFilter, capitalise, humanizeFormEditTime, humanizePointDueDate, humanizePointDueTime };

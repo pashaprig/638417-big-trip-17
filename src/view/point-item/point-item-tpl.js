@@ -1,5 +1,9 @@
 import { getDurationDates } from '../../utils';
-import { getTitle } from '../../utils';
+import { getTitle, humanizeFormEditTime, humanizePointDueDate, humanizePointDueTime} from '../../utils';
+
+// const humanizeFormEditTime = (dueDate) => dayjs(dueDate).format('DD/MM/YY HH:mm');
+// const humanizePointDueDate = (dueDate) => dayjs(dueDate).format('MMM D');
+// const humanizePointDueTime = (dueDate) => dayjs(dueDate).format('HH:mm');
 
 const getOffers = (trip) => {
   let offersTemplate = '';
@@ -27,16 +31,16 @@ const createPointTemplate = (boardPoint) => {
   return (
     `<li class="trip-events__item">
        <div class="event">
-         <time class="event__date" datetime="${dateFrom.format('YYYY-MM-DD')}">${dateFrom.format('MMM D')}</time>
+         <time class="event__date" datetime="${humanizeFormEditTime(dateFrom)}">${humanizePointDueDate(dateFrom)}</time>
          <div class="event__type">
            <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
          </div>
          <h4 class="event__title">${type} ${getTitle(boardPoint)} ${destination}</h4>
          <div class="event__schedule">
            <p class="event__time">
-             <time class="event__start-time" datetime="${dateFrom.format()}">${dateFrom.format('HH:mm')}</time>
+             <time class="event__start-time" datetime="${humanizeFormEditTime(dateFrom)}">${humanizePointDueTime(dateFrom)}</time>
              &mdash;
-             <time class="event__end-time" datetime="${dateTo.format()}">${dateTo.format('HH:mm')}</time>
+             <time class="event__end-time" datetime="${humanizeFormEditTime(dateTo)}">${humanizePointDueTime(dateTo)}</time>
            </p>
            <p class="event__duration">${getDurationDates(dateFrom, dateTo)}</p>
          </div>

@@ -1,9 +1,8 @@
 import { CITIES_LIBRARY, TYPES_LIBRARY } from '../../consts';
-import { capitalise, getTitle } from '../../utils';
+import { capitalise, getTitle, humanizeFormEditTime } from '../../utils';
 
 const getOffers = (checkedType, offers) => {
   const pointTypeOffer = offers.find((offer) => offer.type === checkedType);
-
 
   let offersTemplate = '';
   pointTypeOffer.offers.forEach((offer) => {
@@ -81,10 +80,10 @@ const createNewEditFormTemplate = (data = {}, offers, allDestinations) => {
            </div>
            <div class="event__field-group  event__field-group--time">
              <label class="visually-hidden" for="event-start-time-1">From</label>
-             <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${dateFrom.format('YY/MM/DD HH:mm')}">
+             <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${humanizeFormEditTime(dateFrom)}">
              &mdash;
              <label class="visually-hidden" for="event-end-time-1">To</label>
-             <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${dateTo.format('YY/MM/DD HH:mm')}">
+             <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${humanizeFormEditTime(dateTo)}">
            </div>
            <div class="event__field-group  event__field-group--price">
              <label class="event__label" for="event-price-1">
