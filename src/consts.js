@@ -25,12 +25,13 @@ const DEFAULT_POINT = {
   offers: [],
 };
 
-const sotrEnum = {
+const sortEnum = {
   day:'sort-day',
   time:'sort-time',
   price:'sort-price',
 };
 
 const TYPES_LIBRARY = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+const CITIES_LIBRARY = ['Chamonix', 'Geneva', 'Amsterdam', 'Helsinki', 'Kyiv'];
 
-export {FilterType, SortType, Mode, TYPES_LIBRARY, DEFAULT_POINT, sotrEnum};
+export {FilterType, SortType, Mode, TYPES_LIBRARY, DEFAULT_POINT, sortEnum, CITIES_LIBRARY};

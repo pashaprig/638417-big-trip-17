@@ -5,13 +5,17 @@ import SortView from '../view/sort/sort-view';
 import PointPresenter from './point-presenter';
 import { updateItem, sortPointByPrice, sortByTime } from '../utils';
 import { SortType } from '../consts';
+import { allOffers } from '../mock/offer-mock';
 
 export default class BoardPresenter {
   #boardContainer = null;
   #pointsModel = null;
+
+  #allOffers = allOffers;
   #destinationModel = null;
-  #boardDestination = null;
+
   #boardPoints = [];
+  #boardDestinations = [];
   #pointPresenter = new Map();
   #currentSortType = SortType.DEFAULT;
   #sourcedBoardPoints = [];
@@ -28,10 +32,11 @@ export default class BoardPresenter {
 
   init() { // Инициация пресентера
     this.#boardPoints = [...this.#pointsModel.points]; //Создаёт точки
-    this.#boardDestination = this.#destinationModel.getDestinations(); //Создаёт информацию про точки
+    this.#boardDestinations = [...this.#destinationModel.destinations]; //Создаёт точки
 
     // исходный массив:
     this.#sourcedBoardPoints = [...this.#pointsModel.points];
+
     this.#renderBoard();
   }
 
@@ -52,7 +57,7 @@ export default class BoardPresenter {
   #handlePointChange = (updatedPoint) => {
     this.#boardPoints = updateItem(this.#boardPoints, updatedPoint);
     this.#sourcedBoardPoints = updateItem(this.#sourcedBoardPoints, updatedPoint);
-    this.#pointPresenter.get(updatedPoint.id).init(updatedPoint, this.#boardDestination[0]);
+    this.#pointPresenter.get(updatedPoint.id).init(updatedPoint, this.#allOffers, this.#boardDestinations);
   };
 
   #sortPoints = (sortType) => {
@@ -93,14 +98,14 @@ export default class BoardPresenter {
     render(this.#piontListComponent, this.#boardContainer, RenderPosition.BEFOREEND);
   };
 
-  #renderPoint(point, destination) { //Отрисовывает точку
+  #renderPoint(point, offers, destinations) { //Отрисовывает точку
     const pointPresenter = new PointPresenter(this.#piontListComponent.element, this.#handlePointChange, this.#handleModeChange);
-    pointPresenter.init(point, destination);
+    pointPresenter.init(point, offers, destinations);
     this.#pointPresenter.set(point.id, pointPresenter);
   }
 
   #renderPoints = () => { //Отрисовывает точки
-    this.#boardPoints.forEach((point) => this.#renderPoint(point, this.#boardDestination[0]));
+    this.#boardPoints.forEach((point) => this.#renderPoint(point, this.#allOffers, this.#boardDestinations));
   };
 
   #clearPointList = () => {

@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc.js';
 import minMax from 'dayjs/plugin/minMax.js';
 import { nanoid } from 'nanoid';
-import { TYPES_LIBRARY } from '../consts.js';
+import { CITIES_LIBRARY, TYPES_LIBRARY } from '../consts.js';
 dayjs.extend(utc);
 dayjs.extend(minMax);
 
@@ -24,13 +24,19 @@ export const generatePoint = () => {
   const pointType = getRandomArrayElement(TYPES_LIBRARY);
   const offers = allOffers.find((offer) => offer.type === pointType);
 
+  const cityName = getRandomArrayElement(CITIES_LIBRARY);
+  const allDestination = createDestinations();
+  const destinationInfo = allDestination.find((destination) => destination.name === cityName);
+
   return {
     id: nanoid(),
     basePrice: getRandomInteger(10, 1000),
     dateFrom: dayjs.min(dayjs(), genearateDate().dateFrom, genearateDate().dateTo),
     dateTo: dayjs.max(dayjs(), genearateDate().dateFrom, genearateDate().dateTo),
     isFavorite: Boolean(getRandomInteger(0, 1)),
-    destination: getRandomArrayElement(createDestinations()).name,
+    destination: destinationInfo.name,
+    description: destinationInfo.description,
+    pictures: destinationInfo.pictures,
     offers: offers.offers,
     type: offers.type,
   };
