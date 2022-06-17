@@ -1,24 +1,8 @@
 import {allOffers} from './offer-mock.js';
 import {createDestinations} from './destination-mock.js';
 import {getRandomInteger, getRandomArrayElement} from '../utils.js';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc.js';
-import minMax from 'dayjs/plugin/minMax.js';
 import { nanoid } from 'nanoid';
 import { CITIES_LIBRARY, TYPES_LIBRARY } from '../consts.js';
-dayjs.extend(utc);
-dayjs.extend(minMax);
-
-
-const genearateDate = () => {
-  const daysGap = 10;
-  const firstDayGap = getRandomInteger(-daysGap, daysGap);
-  const secondDayGap = getRandomInteger(firstDayGap, daysGap);
-  return {
-    dateFrom: dayjs.utc().add(firstDayGap, 'day').add(getRandomInteger(0, daysGap), 'minute').add(getRandomInteger(0, daysGap), 'hour'),
-    dateTo: dayjs.utc().add(secondDayGap, 'day').add(getRandomInteger(0, daysGap), 'minute').add(getRandomInteger(0, daysGap), 'hour'),
-  };
-};
 
 export const generatePoint = () => {
   const pointType = getRandomArrayElement(TYPES_LIBRARY);
@@ -31,8 +15,8 @@ export const generatePoint = () => {
   return {
     id: nanoid(),
     basePrice: getRandomInteger(10, 1000),
-    dateFrom: dayjs.min(dayjs(), genearateDate().dateFrom, genearateDate().dateTo),
-    dateTo: dayjs.max(dayjs(), genearateDate().dateFrom, genearateDate().dateTo),
+    dateFrom: `2022-06-${getRandomInteger(10, 17)}T0${getRandomInteger(1, 3)}:16:54.401Z`,
+    dateTo: `2022-06-${getRandomInteger(17, 20)}T03:${getRandomInteger(17, 55)}:54.401Z`,
     isFavorite: Boolean(getRandomInteger(0, 1)),
     destination: destinationInfo.name,
     description: destinationInfo.description,
