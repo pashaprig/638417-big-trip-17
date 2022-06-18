@@ -30,6 +30,10 @@ export default class BoardPresenter {
     this.#destinationModel = destinationModel;
   }
 
+  get points() {
+    return this.#pointsModel.points;
+  }
+
   init() { // Инициация пресентера
     this.#boardPoints = [...this.#pointsModel.points]; //Создаёт точки
     this.#boardDestinations = [...this.#destinationModel.destinations]; //Создаёт точки
