@@ -61,20 +61,6 @@ const getTitle = (boardPoint) => {
 
 const isEscapePressed = (evt) => (evt.key === 'Escape' || evt.key === 'Esc');
 
-const updateItem = (items, update) => {
-  const index = items.findIndex((item) => item.id === update.id);
-
-  if (index === -1) {
-    return items;
-  }
-
-  return [
-    ...items.slice(0, index),
-    update,
-    ...items.slice(index + 1),
-  ];
-};
-
 // Сравнение цены
 const comparePrice = (priceA, priceB) => {
   if (priceA > priceB) {
@@ -107,7 +93,6 @@ const sortByTime = (pointA, pointB) => {
   return compareTime(timeA, timeB);
 };
 
-
 const isPointInPast = (dueDate) => dayjs().isAfter(dueDate, 'D');
 const isPointInFuture = (dueDate) => dayjs().isBefore(dueDate, 'D');
 const isPointInPresent = (dueDate) => dayjs().isSame(dueDate, 'D');
@@ -127,4 +112,4 @@ const generateFilter = (points) => Object.entries(filter).map(
 
 const capitalise = (word) => word.slice(0, 1).toUpperCase() + word.slice(1);
 
-export { getRandomInteger, getRandomArrayElement, getRandomMultipleArrayElement, getDurationDates, getTitle, isEscapePressed, updateItem, sortPointByPrice, sortByTime, filter, generateFilter, capitalise, humanizeFormEditTime, humanizePointDueDate, humanizePointDueTime };
+export { getRandomInteger, getRandomArrayElement, getRandomMultipleArrayElement, getDurationDates, getTitle, isEscapePressed, sortPointByPrice, sortByTime, filter, generateFilter, capitalise, humanizeFormEditTime, humanizePointDueDate, humanizePointDueTime };

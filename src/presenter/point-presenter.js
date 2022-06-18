@@ -1,8 +1,8 @@
 import { isEscapePressed } from '../utils';
 import PointItemView from '../view/point-item/point-item-view';
 import EditFormView from '../view/edit-form/edit-form-view';
-import { render, replace, remove } from '../framework/render.js';
-import { Mode } from '../consts';
+import { render, replace, remove } from '../framework/render';
+import { Mode, UserAction, UpdateType } from '../consts';
 
 
 export default class PointPresenter {
@@ -96,7 +96,11 @@ export default class PointPresenter {
   };
 
   #handleFavoriteClick = () => {
-    this.#changeData({...this.#point, isFavorite: !this.#point.isFavorite});
+    this.#changeData(
+      UserAction.UPDATE_TASK,
+      UpdateType.MINOR,
+      {...this.#point, isFavorite: !this.#point.isFavorite},
+    );
   };
 
   #handleCloseClick = () => {
@@ -106,6 +110,11 @@ export default class PointPresenter {
 
   #handleFormSubmit = (point) => {
     this.#changeData(point);
+    this.#changeData(
+      UserAction.UPDATE_TASK,
+      UpdateType.MINOR,
+      point,
+    );
     this.#replaceEditFormToPoint();
   };
 }
