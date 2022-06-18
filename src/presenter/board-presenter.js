@@ -3,7 +3,7 @@ import PiontListEmptyView from '../view/point-list-empty/point-list-empty-view';
 import { render, RenderPosition } from '../framework/render.js';
 import SortView from '../view/sort/sort-view';
 import PointPresenter from './point-presenter';
-import { updateItem, sortPointByPrice, sortByTime } from '../utils';
+import { sortPointByPrice, sortByTime } from '../utils';
 import { SortType } from '../consts';
 import { allOffers } from '../mock/offer-mock';
 
@@ -14,11 +14,10 @@ export default class BoardPresenter {
   #allOffers = allOffers;
   #destinationModel = null;
 
-  #boardPoints = [];
   #boardDestinations = [];
   #pointPresenter = new Map();
   #currentSortType = SortType.DEFAULT;
-  #sourcedBoardPoints = [];
+
 
   #piontListComponent = new PiontListView();
   #piontListEmptyComponent = new PiontListEmptyView();
@@ -31,21 +30,25 @@ export default class BoardPresenter {
   }
 
   get points() {
+    switch (this.#currentSortType) {
+      case SortType.PRICE:
+        return [...this.#pointsModel.points].sort(sortPointByPrice);
+      case SortType.TIME:
+        return [...this.#pointsModel.points].sort(sortByTime);
+      case SortType.DEFAULT:
+    }
+
     return this.#pointsModel.points;
   }
 
   init() { // Инициация пресентера
-    this.#boardPoints = [...this.#pointsModel.points]; //Создаёт точки
     this.#boardDestinations = [...this.#destinationModel.destinations]; //Создаёт точки
-
-    // исходный массив:
-    this.#sourcedBoardPoints = [...this.#pointsModel.points];
 
     this.#renderBoard();
   }
 
   #renderBoard() { //Отрисовывает контейнер для точек
-    if (!this.#boardPoints.length) {
+    if (!this.#pointsModel.points.length) {
       this.#renderNoTasks();
       return;
     }
@@ -59,24 +62,7 @@ export default class BoardPresenter {
   };
 
   #handlePointChange = (updatedPoint) => {
-    this.#boardPoints = updateItem(this.#boardPoints, updatedPoint);
-    this.#sourcedBoardPoints = updateItem(this.#sourcedBoardPoints, updatedPoint);
     this.#pointPresenter.get(updatedPoint.id).init(updatedPoint, this.#allOffers, this.#boardDestinations);
-  };
-
-  #sortPoints = (sortType) => {
-    switch (sortType) {
-      case SortType.PRICE:
-        this.#boardPoints.sort(sortPointByPrice);
-        break;
-      case SortType.TIME:
-        this.#boardPoints.sort(sortByTime);
-        break;
-      case SortType.DEFAULT:
-        this.#boardPoints = [...this.#sourcedBoardPoints];
-    }
-
-    this.#currentSortType = sortType;
   };
 
   #handleSortTypeChange = (sortType) => {
@@ -84,7 +70,7 @@ export default class BoardPresenter {
       return;
     }
 
-    this.#sortPoints(sortType);
+    this.#currentSortType = sortType;
     this.#clearPointList();
     this.#renderPoints();
   };
@@ -109,7 +95,7 @@ export default class BoardPresenter {
   }
 
   #renderPoints = () => { //Отрисовывает точки
-    this.#boardPoints.forEach((point) => this.#renderPoint(point, this.#allOffers, this.#boardDestinations));
+    this.#pointsModel.points.forEach((point) => this.#renderPoint(point, this.#allOffers, this.#boardDestinations));
   };
 
   #clearPointList = () => {
