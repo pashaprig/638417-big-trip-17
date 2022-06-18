@@ -24,7 +24,7 @@ export default class PointModel extends Observable {
     this._notify(updateType, update);
   };
 
-  addpoint = (updateType, update) => {
+  addPoint = (updateType, update) => {
     this.#points = [
       update,
       ...this.#points,
@@ -33,7 +33,7 @@ export default class PointModel extends Observable {
     this._notify(updateType, update);
   };
 
-  deletepoint = (updateType, update) => {
+  deletePoint = (updateType, update) => {
     const index = this.#points.findIndex((point) => point.id === update.id);
 
     if (index === -1) {
