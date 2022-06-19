@@ -104,13 +104,6 @@ const filter = {
   [FilterType.PAST]: (points) => points.filter((point) => isPointInPast(point.dateTo)),
 };
 
-const generateFilter = (points) => Object.entries(filter).map(
-  ([filterName, filterPoints]) => ({
-    name: filterName,
-    count: filterPoints(points).length,
-  })
-);
-
 const capitalise = (word) => word.slice(0, 1).toUpperCase() + word.slice(1);
 
-export { getRandomInteger, getRandomArrayElement, getRandomMultipleArrayElement, getDurationDates, getTitle, isEscapePressed, sortPointByPrice, sortByTime, filter, generateFilter, capitalise, humanizeFormEditTime, humanizePointDueDate, humanizePointDueTime, isDatesEqual };
+export { getRandomInteger, getRandomArrayElement, getRandomMultipleArrayElement, getDurationDates, getTitle, isEscapePressed, sortPointByPrice, sortByTime, filter, capitalise, humanizeFormEditTime, humanizePointDueDate, humanizePointDueTime, isDatesEqual };
