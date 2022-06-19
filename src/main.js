@@ -1,9 +1,10 @@
 import DestinationModel from './model/destination-model';
 import PointModel from './model/point-items-model';
 import BoardPresenter from './presenter/board-presenter';
-import { render } from './framework/render.js';
+import { render } from './framework/render';
 import FilterView from './view/filter/filter-view';
 import {generateFilter} from './utils';
+import FilterModel from './model/filter-model';
 
 const pageHeader = document.querySelector('.page-header');
 const tripControls = pageHeader.querySelector('.trip-controls__filters'); //Блок в хедере страницы для отрисовки контролов
@@ -17,6 +18,7 @@ const destinationModel = new DestinationModel(); //Массив информац
 const boardPresenter = new BoardPresenter(tripEvents, pointsModel, destinationModel);
 
 const filters = generateFilter(pointsModel.points);
+const filterModel = new FilterModel();
 
 render(new FilterView(filters), tripControls); // Отрисовывает фильтры в блок для контролов
 
