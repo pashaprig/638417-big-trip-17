@@ -1,4 +1,4 @@
-import { isEscapePressed } from '../utils';
+import { isEscapePressed, isDatesEqual } from '../utils';
 import PointItemView from '../view/point-item/point-item-view';
 import EditFormView from '../view/edit-form/edit-form-view';
 import { render, replace, remove } from '../framework/render';
@@ -39,6 +39,7 @@ export default class PointPresenter {
     this.#pointComponent.setFavoriteClickHandler(this.#handleFavoriteClick);
     this.#editFormComponent.setFormButtonCloseHandler(this.#handleCloseClick);
     this.#editFormComponent.setFormSubmitHandler(this.#handleFormSubmit);
+    this.#editFormComponent.setDeleteClickHandler(this.#handleDeleteClick);
 
     if (prevPointComponent === null || prevEditFormComponent === null) {
       render(this.#pointComponent, this.#pointListContainer); //Отрисовать точку, <li> в обёртку для точек <ul>
@@ -108,13 +109,22 @@ export default class PointPresenter {
     this.#replaceEditFormToPoint();
   };
 
-  #handleFormSubmit = (point) => {
-    this.#changeData(point);
+  #handleFormSubmit = (update) => {
+    const isMinorUpdate = !isDatesEqual(this.#point.dueDate, update.dueDate);
+
     this.#changeData(
       UserAction.UPDATE_POINT,
+      isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
+      update,
+    );
+    this.#replaceEditFormToPoint();
+  };
+
+  #handleDeleteClick = (point) => {
+    this.#changeData(
+      UserAction.DELETE_POINT,
       UpdateType.MINOR,
       point,
     );
-    this.#replaceEditFormToPoint();
   };
 }

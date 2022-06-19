@@ -96,6 +96,7 @@ const sortByTime = (pointA, pointB) => {
 const isPointInPast = (dueDate) => dayjs().isAfter(dueDate, 'D');
 const isPointInFuture = (dueDate) => dayjs().isBefore(dueDate, 'D');
 const isPointInPresent = (dueDate) => dayjs().isSame(dueDate, 'D');
+const isDatesEqual = (dateA, dateB) => (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB, 'D');
 
 const filter = {
   [FilterType.ALL]: (points) => points,
@@ -112,4 +113,4 @@ const generateFilter = (points) => Object.entries(filter).map(
 
 const capitalise = (word) => word.slice(0, 1).toUpperCase() + word.slice(1);
 
-export { getRandomInteger, getRandomArrayElement, getRandomMultipleArrayElement, getDurationDates, getTitle, isEscapePressed, sortPointByPrice, sortByTime, filter, generateFilter, capitalise, humanizeFormEditTime, humanizePointDueDate, humanizePointDueTime };
+export { getRandomInteger, getRandomArrayElement, getRandomMultipleArrayElement, getDurationDates, getTitle, isEscapePressed, sortPointByPrice, sortByTime, filter, generateFilter, capitalise, humanizeFormEditTime, humanizePointDueDate, humanizePointDueTime, isDatesEqual };
