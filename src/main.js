@@ -14,7 +14,7 @@ const pointsModel = new PointModel(); //Массив точек/мест
 const filterModel = new FilterModel();
 const destinationModel = new DestinationModel(); //Массив информации про точки/места
 
-const boardPresenter = new BoardPresenter(tripEvents, pointsModel, destinationModel);
+const boardPresenter = new BoardPresenter(tripEvents, pointsModel, destinationModel, filterModel);
 const filterPresenter = new FilterPresenter(tripControls, filterModel, pointsModel);
 
 filterPresenter.init();

@@ -3,13 +3,14 @@ import PiontListEmptyView from '../view/point-list-empty/point-list-empty-view';
 import { remove, render, RenderPosition } from '../framework/render';
 import SortView from '../view/sort/sort-view';
 import PointPresenter from './point-presenter';
-import { sortPointByPrice, sortByTime } from '../utils';
-import { SortType, UpdateType, UserAction } from '../consts';
+import { sortPointByPrice, sortByTime, filter, sortDayUp } from '../utils';
+import { FilterType, SortType, UpdateType, UserAction } from '../consts';
 import { allOffers } from '../mock/offer-mock';
 
 export default class BoardPresenter {
   #boardContainer = null;
   #pointsModel = null;
+  #filterModel = null;
 
   #allOffers = allOffers;
   #destinationModel = null;
@@ -17,31 +18,38 @@ export default class BoardPresenter {
   #boardDestinations = [];
   #pointPresenter = new Map();
   #currentSortType = SortType.DEFAULT;
+  #filterType = FilterType.ALL;
 
 
   #piontListComponent = new PiontListView();
   #piontListEmptyComponent = new PiontListEmptyView();
   #sortComponent = null;
 
-  constructor(boardContainer, pointsModel, destinationModel) {
+  constructor(boardContainer, pointsModel, destinationModel, filterModel) {
     this.#boardContainer = boardContainer;
     this.#pointsModel = pointsModel;
     this.#destinationModel = destinationModel;
+    this.#filterModel = filterModel;
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   get points() {
+    this.#filterType = this.#filterModel.filter;
+    const points = this.#pointsModel.points;
+    const filteredPoints = filter[this.#filterType](points);
+
     switch (this.#currentSortType) {
       case SortType.PRICE:
-        return [...this.#pointsModel.points].sort(sortPointByPrice);
+        return filteredPoints.sort(sortPointByPrice);
       case SortType.TIME:
-        return [...this.#pointsModel.points].sort(sortByTime);
+        return filteredPoints.sort(sortByTime);
       case SortType.DEFAULT:
-        return this.#pointsModel.points;
+        return filteredPoints.sort(sortDayUp);
     }
 
-    return this.#pointsModel.points;
+    return filteredPoints;
   }
 
   init() { // Инициация пресентера

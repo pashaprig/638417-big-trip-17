@@ -93,9 +93,13 @@ export const sortByTime = (pointA, pointB) => {
   return compareTime(timeA, timeB);
 };
 
-export const isPointInPast = (dueDate) => dayjs().isAfter(dueDate, 'D');
-export const isPointInFuture = (dueDate) => dayjs().isBefore(dueDate, 'D');
-export const isPointInPresent = (dueDate) => dayjs().isSame(dueDate, 'D');
+const getWeightForStartDate = (dateA, dateB) => dateA - dateB;
+
+export const sortDayUp = (pointA, pointB) => getWeightForStartDate(dayjs(pointA.dateFrom), dayjs(pointB.dateFrom));
+
+const isPointInPast = (dueDate) => dayjs().isAfter(dueDate, 'D');
+const isPointInFuture = (dueDate) => dayjs().isBefore(dueDate, 'D');
+const isPointInPresent = (dueDate) => dayjs().isSame(dueDate, 'D');
 export const isDatesEqual = (dateA, dateB) => (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB, 'D');
 
 export const filter = {
