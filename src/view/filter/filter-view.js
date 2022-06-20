@@ -17,11 +17,14 @@ export default class FilterView extends AbstractView {
 
   setFilterTypeChangeHandler = (callback) => {
     this._callback.filterTypeChange = callback;
-    this.element.addEventListener('change', this.#filterTypeChangeHandler);
+    this.element.addEventListener('click', this.#filterTypeChangeHandler);
   };
 
   #filterTypeChangeHandler = (evt) => {
     evt.preventDefault();
-    this._callback.filterTypeChange(evt.target.value);
+    if (!evt.target.classList.contains('trip-filters__filter-label')) {
+      return;
+    }
+    this._callback.filterTypeChange(evt.target.parentNode.querySelector('.trip-filters__filter-input').value);
   };
 }

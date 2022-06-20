@@ -22,7 +22,7 @@ export default class BoardPresenter {
 
 
   #piontListComponent = new PiontListView();
-  #piontListEmptyComponent = new PiontListEmptyView();
+  #piontListEmptyComponent = null;
   #sortComponent = null;
 
   constructor(boardContainer, pointsModel, destinationModel, filterModel) {
@@ -110,7 +110,8 @@ export default class BoardPresenter {
   };
 
   #renderNoPoints = () => { //Отрисовать заглушку в контейнер, если нет точек
-    render(this.#piontListEmptyComponent, this.#piontListComponent.element, RenderPosition.AFTERBEGIN);
+    this.#piontListEmptyComponent = new PiontListEmptyView(this.#filterType);
+    render(this.#piontListEmptyComponent, this.#boardContainer, RenderPosition.AFTERBEGIN);
   };
 
   #renderPointList = () => { //Отрисовывает список для точек
@@ -132,7 +133,10 @@ export default class BoardPresenter {
     this.#pointPresenter.clear();
 
     remove(this.#sortComponent);
-    remove(this.#piontListEmptyComponent);
+
+    if (this.#piontListEmptyComponent) {
+      remove(this.#piontListEmptyComponent);
+    }
 
     if (resetSortType) {
       this.#currentSortType = SortType.DEFAULT;
