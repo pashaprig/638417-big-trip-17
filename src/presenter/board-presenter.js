@@ -6,6 +6,7 @@ import PointPresenter from './point-presenter';
 import { sortPointByPrice, sortByTime, filter, sortDayUp } from '../utils';
 import { FilterType, SortType, UpdateType, UserAction } from '../consts';
 import { allOffers } from '../mock/offer-mock';
+import PointNewPresenter from './point-new-presenter';
 
 export default class BoardPresenter {
   #boardContainer = null;
@@ -17,6 +18,7 @@ export default class BoardPresenter {
 
   #boardDestinations = [];
   #pointPresenter = new Map();
+  #pointNewPresenter = null;
   #currentSortType = SortType.DEFAULT;
   #filterType = FilterType.ALL;
 
@@ -30,6 +32,8 @@ export default class BoardPresenter {
     this.#pointsModel = pointsModel;
     this.#destinationModel = destinationModel;
     this.#filterModel = filterModel;
+
+    this.#pointNewPresenter = new PointNewPresenter(this.#piontListComponent.element, this.#handleViewAction);
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
@@ -58,7 +62,14 @@ export default class BoardPresenter {
     this.#renderBoard();
   }
 
+  createPoint = (callback) => {
+    this.#currentSortType = SortType.DEFAULT;
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.ALL);
+    this.#pointNewPresenter.init(callback, this.#allOffers, this.#boardDestinations);
+  };
+
   #handleModeChange = () => {
+    this.#pointNewPresenter.destroy();
     this.#pointPresenter.forEach((presenter) => presenter.resetView());
   };
 
@@ -129,6 +140,7 @@ export default class BoardPresenter {
   };
 
   #clearPointList = ({ resetSortType = false } = {}) => {
+    this.#pointNewPresenter.destroy();
     this.#pointPresenter.forEach((presenter) => presenter.destroy());
     this.#pointPresenter.clear();
 

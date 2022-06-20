@@ -1,5 +1,5 @@
 import { CITIES_LIBRARY, TYPES_LIBRARY } from '../../consts';
-import { capitalise, getTitle, humanizeFormEditTime } from '../../utils';
+import { capitalise, humanizeFormEditTime } from '../../utils';
 
 const getOffers = (checkedType, offers) => {
   const pointTypeOffer = offers.find((offer) => offer.type === checkedType);
@@ -71,7 +71,7 @@ const createNewEditFormTemplate = (data = {}, offers, allDestinations) => {
            </div>
            <div class="event__field-group  event__field-group--destination">
              <label class="event__label  event__type-output" for="event-destination-1">
-               ${checkedType ? checkedType : type} ${getTitle(data)}
+               ${checkedType ? checkedType : type}
              </label>
              <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value=${checkedDestination ? checkedDestination : destination} list="destination-list-1">
              <datalist id="destination-list-1">

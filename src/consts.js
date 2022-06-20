@@ -15,16 +15,6 @@ const Mode = {
   EDITING: 'EDITING',
 };
 
-const DEFAULT_POINT = {
-  type: '',
-  destination: null,
-  basePrice: '',
-  dateFrom: '',
-  dateTo: '',
-  id: '',
-  offers: [],
-};
-
 const TYPES_LIBRARY = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 const CITIES_LIBRARY = ['Chamonix', 'Geneva', 'Amsterdam', 'Helsinki', 'Kyiv'];
 
@@ -40,4 +30,4 @@ const UpdateType = {
   MAJOR: 'MAJOR',
 };
 
-export {FilterType, SortType, Mode, TYPES_LIBRARY, DEFAULT_POINT, CITIES_LIBRARY, UserAction, UpdateType};
+export {FilterType, SortType, Mode, TYPES_LIBRARY, CITIES_LIBRARY, UserAction, UpdateType};
