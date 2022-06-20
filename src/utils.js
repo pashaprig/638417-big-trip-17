@@ -1,28 +1,28 @@
 // Функция из интернета по генерации случайного числа из диапазона
 // Источник - https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_random
 import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc.js';
-import minMax from 'dayjs/plugin/minMax.js';
-import duration from 'dayjs/plugin/duration.js';
+import utc from 'dayjs/plugin/utc';
+import minMax from 'dayjs/plugin/minMax';
+import duration from 'dayjs/plugin/duration';
 import { FilterType } from './consts';
 dayjs.extend(utc);
 dayjs.extend(minMax);
 dayjs.extend(duration);
 
-const humanizeFormEditTime = (dueDate) => dayjs(dueDate).format('DD/MM/YY HH:mm');
-const humanizePointDueDate = (dueDate) => dayjs(dueDate).format('MMM D');
-const humanizePointDueTime = (dueDate) => dayjs(dueDate).format('HH:mm');
+export const humanizeFormEditTime = (dueDate) => dayjs(dueDate).format('DD/MM/YY HH:mm');
+export const humanizePointDueDate = (dueDate) => dayjs(dueDate).format('MMM D');
+export const humanizePointDueTime = (dueDate) => dayjs(dueDate).format('HH:mm');
 
-const getRandomInteger = (a = 0, b = 1) => {
+export const getRandomInteger = (a = 0, b = 1) => {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
 
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
 
-const getRandomArrayElement = (elements) => (elements[getRandomInteger(0, elements.length - 1)]);
+export const getRandomArrayElement = (elements) => (elements[getRandomInteger(0, elements.length - 1)]);
 
-const getRandomMultipleArrayElement = (elements) => {
+export const getRandomMultipleArrayElement = (elements) => {
   const randomArrayNumber = getRandomInteger(1, elements.length - 1);
   for (let i = elements.length - 1; i > 0; i--) {
     const randomSort = Math.floor(Math.random() * (i + 1));
@@ -32,7 +32,7 @@ const getRandomMultipleArrayElement = (elements) => {
   return array;
 };
 
-const getDurationDates = (dateFrom, dateTo) => {
+export const getDurationDates = (dateFrom, dateTo) => {
   const diff = dayjs(dateTo).diff(dateFrom);
   const daysCount = dayjs.duration(diff).format('DD');
   const hoursCount = dayjs.duration(diff).format('HH');
@@ -48,7 +48,7 @@ const getDurationDates = (dateFrom, dateTo) => {
   }
 };
 
-const getTitle = (boardPoint) => {
+export const getTitle = (boardPoint) => {
   let pretextTitle = 'to';
   if (boardPoint.type.includes('sightseeing') || boardPoint.type.includes('restaurant')) {
     pretextTitle = 'in';
@@ -59,10 +59,10 @@ const getTitle = (boardPoint) => {
   return pretextTitle;
 };
 
-const isEscapePressed = (evt) => (evt.key === 'Escape' || evt.key === 'Esc');
+export const isEscapePressed = (evt) => (evt.key === 'Escape' || evt.key === 'Esc');
 
 // Сравнение цены
-const comparePrice = (priceA, priceB) => {
+export const comparePrice = (priceA, priceB) => {
   if (priceA > priceB) {
     return -1;
   }
@@ -73,10 +73,10 @@ const comparePrice = (priceA, priceB) => {
 };
 
 //Функция сортировки по цене для передачи в метод sort
-const sortPointByPrice = (pointA, pointB) => comparePrice(pointA.basePrice, pointB.basePrice);
+export const sortPointByPrice = (pointA, pointB) => comparePrice(pointA.basePrice, pointB.basePrice);
 
 //Сравнение времени
-const compareTime = (timeA, timeB) => {
+export const compareTime = (timeA, timeB) => {
   if (timeA > timeB) {
     return 1;
   }
@@ -87,23 +87,21 @@ const compareTime = (timeA, timeB) => {
 };
 
 //Функция сортировки по времени для передачи в метод sort
-const sortByTime = (pointA, pointB) => {
+export const sortByTime = (pointA, pointB) => {
   const timeA = dayjs(pointA.dateFrom).diff(pointA.dateTo);
   const timeB = dayjs(pointB.dateFrom).diff(pointB.dateTo);
   return compareTime(timeA, timeB);
 };
 
-const isPointInPast = (dueDate) => dayjs().isAfter(dueDate, 'D');
-const isPointInFuture = (dueDate) => dayjs().isBefore(dueDate, 'D');
-const isPointInPresent = (dueDate) => dayjs().isSame(dueDate, 'D');
-const isDatesEqual = (dateA, dateB) => (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB, 'D');
+export const isPointInPast = (dueDate) => dayjs().isAfter(dueDate, 'D');
+export const isPointInFuture = (dueDate) => dayjs().isBefore(dueDate, 'D');
+export const isPointInPresent = (dueDate) => dayjs().isSame(dueDate, 'D');
+export const isDatesEqual = (dateA, dateB) => (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB, 'D');
 
-const filter = {
+export const filter = {
   [FilterType.ALL]: (points) => points,
   [FilterType.FUTURE]: (points) => points.filter((point) => isPointInFuture(point.dateFrom) && isPointInPresent(point.dateFrom)),
   [FilterType.PAST]: (points) => points.filter((point) => isPointInPast(point.dateTo)),
 };
 
-const capitalise = (word) => word.slice(0, 1).toUpperCase() + word.slice(1);
-
-export { getRandomInteger, getRandomArrayElement, getRandomMultipleArrayElement, getDurationDates, getTitle, isEscapePressed, sortPointByPrice, sortByTime, filter, capitalise, humanizeFormEditTime, humanizePointDueDate, humanizePointDueTime, isDatesEqual };
+export const capitalise = (word) => word.slice(0, 1).toUpperCase() + word.slice(1);

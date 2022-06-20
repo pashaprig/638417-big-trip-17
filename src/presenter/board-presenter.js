@@ -38,6 +38,7 @@ export default class BoardPresenter {
       case SortType.TIME:
         return [...this.#pointsModel.points].sort(sortByTime);
       case SortType.DEFAULT:
+        return this.#pointsModel.points;
     }
 
     return this.#pointsModel.points;
@@ -90,7 +91,7 @@ export default class BoardPresenter {
 
     this.#currentSortType = sortType;
     this.#clearPointList();
-    this.#renderPoints();
+    this.#renderBoard();
   };
 
   #renderSort = () => {
@@ -114,8 +115,8 @@ export default class BoardPresenter {
     this.#pointPresenter.set(point.id, pointPresenter);
   }
 
-  #renderPoints = () => { //Отрисовывает точки
-    this.#pointsModel.points.forEach((point) => this.#renderPoint(point, this.#allOffers, this.#boardDestinations));
+  #renderPoints = (points) => { //Отрисовывает точки
+    points.forEach((point) => this.#renderPoint(point, this.#allOffers, this.#boardDestinations));
   };
 
   #clearPointList = ({ resetSortType = false } = {}) => {
@@ -131,12 +132,16 @@ export default class BoardPresenter {
   };
 
   #renderBoard() { //Отрисовывает контейнер для точек
-    if (!this.#pointsModel.points.length) {
+    const points = this.points;
+    const pointsCount = points.length;
+
+    if (pointsCount === 0) {
       this.#renderNoPoints();
       return;
     }
-    this.#renderSort();
+
     this.#renderPointList();
-    this.#renderPoints();
+    this.#renderSort();
+    this.#renderPoints(this.points);
   }
 }

@@ -1,8 +1,8 @@
-import {allOffers} from './offer-mock.js';
-import {createDestinations} from './destination-mock.js';
-import {getRandomInteger, getRandomArrayElement} from '../utils.js';
+import {allOffers} from './offer-mock';
+import {createDestinations} from './destination-mock';
+import {getRandomInteger, getRandomArrayElement} from '../utils';
 import { nanoid } from 'nanoid';
-import { CITIES_LIBRARY, TYPES_LIBRARY } from '../consts.js';
+import { CITIES_LIBRARY, TYPES_LIBRARY } from '../consts';
 
 export const generatePoint = () => {
   const pointType = getRandomArrayElement(TYPES_LIBRARY);
