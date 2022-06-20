@@ -1,3 +1,4 @@
+import he from 'he';
 import { CITIES_LIBRARY, TYPES_LIBRARY } from '../../consts';
 import { capitalise, humanizeFormEditTime } from '../../utils';
 
@@ -73,7 +74,7 @@ const createNewEditFormTemplate = (data = {}, offers, allDestinations) => {
              <label class="event__label  event__type-output" for="event-destination-1">
                ${checkedType ? checkedType : type}
              </label>
-             <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value=${checkedDestination ? checkedDestination : destination} list="destination-list-1">
+             <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value=${he.encode(checkedDestination ? checkedDestination : destination)} list="destination-list-1">
              <datalist id="destination-list-1">
               ${CITIES_LIBRARY.map((city) => (`<option value=${city}></option>`)).join('')}
              </datalist>
