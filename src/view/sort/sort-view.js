@@ -1,10 +1,16 @@
-import { sortEnum } from '../../consts.js';
-import AbstractView from '../../framework/view/abstract-view.js';
-import createSortTemplate from './sort-tpl.js';
+import AbstractView from '../../framework/view/abstract-view';
+import createSortTemplate from './sort-tpl';
 
 export default class SortView extends AbstractView {
+  #currentSortType = null;
+
+  constructor(currentSortType) {
+    super();
+    this.#currentSortType = currentSortType;
+  }
+
   get template() {
-    return createSortTemplate();
+    return createSortTemplate(this.#currentSortType);
   }
 
   setSortTypeChangeHandler = (callback) => {
@@ -17,10 +23,6 @@ export default class SortView extends AbstractView {
       return;
     }
 
-    const attributeTarget = evt.target.getAttribute('for');
-    if (attributeTarget === sortEnum.day || attributeTarget === sortEnum.time || attributeTarget === sortEnum.price) {
-      this.element.querySelector(`#${attributeTarget}`).checked = true;
-    }
     this._callback.sortTypeChange(evt.target.dataset.sortType);
   };
 }

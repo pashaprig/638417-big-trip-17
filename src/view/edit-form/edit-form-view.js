@@ -4,24 +4,13 @@ import flatpickr from 'flatpickr';
 
 import 'flatpickr/dist/flatpickr.min.css';
 
-const BLANK_POINT = {
-  basePrice: '',
-  dateFrom: null,
-  dateTo: null,
-  destination: 'Kyiv',
-  offers: [],
-  type: 'flight',
-  isFavorite: false,
-  isStatusCreate: true,
-};
-
 export default class EditFormView extends AbstractStatefulView {
   #allOffers = null;
   #allDestinations = null;
 
   #datepicker = null;
 
-  constructor(point = BLANK_POINT, allOffers, allDestinations) {
+  constructor(point, allOffers, allDestinations) {
     super();
 
     this._state = EditFormView.parsePointToState(point);
@@ -59,6 +48,17 @@ export default class EditFormView extends AbstractStatefulView {
     this.#setDateToPicker();
     this.setFormSubmitHandler(this._callback.formSubmit);
     this.setFormButtonCloseHandler(this._callback.buttonClose);
+    this.setDeleteClickHandler(this._callback.deleteClick);
+  };
+
+  setDeleteClickHandler = (callback) => {
+    this._callback.deleteClick = callback;
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
+  };
+
+  #formDeleteClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.deleteClick(EditFormView.parseStateToPoint(this._state));
   };
 
   setFormSubmitHandler = (callback) => {
@@ -88,7 +88,7 @@ export default class EditFormView extends AbstractStatefulView {
 
     this.updateElement({
       checkedType: evt.target.value,
-      offers: [], // Вот тут я так понимаю
+      offers: [],
     });
   };
 
@@ -138,7 +138,6 @@ export default class EditFormView extends AbstractStatefulView {
       },
     );
   };
-
 
   #setInnerHandlers = () => {
     this.element.querySelector('.event__type-list').addEventListener('change', this.#changeTypeHandler);
